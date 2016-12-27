@@ -1,0 +1,30 @@
+<!DOCTYPE html><html><head><meta charset=UTF-8><title>Sample FirebaseUI App</title><script src=https://www.gstatic.com/firebasejs/3.6.4/firebase.js></script><script>// !!!! Replace with your own Firebase settings  !!!!!
+      var config = {
+    		apiKey: 'AIzaSyDwJ1XZk23i79ePjEd5jXqBw_fObVGscUQ',
+        authDomain: 'peoplefundingistef.firebaseapp.com',
+        databaseURL: 'https://peoplefundingistef.firebaseio.com',
+        storageBucket: 'peoplefundingistef.appspot.com',
+        messagingSenderId: '353174719687'
+      };
+      firebase.initializeApp(config);</script><script src=https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.js></script><link rel=stylesheet href=https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css><script>// FirebaseUI config.
+      var uiConfig = {
+        'signInSuccessUrl': '/index.html#!/enterproject',
+        'signInOptions': [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          //firebase.auth.GithubAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        'tosUrl': 'tos.html',
+      };
+
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);</script><style>.auth-wrapper {
+         width:350px;
+         margin-left: 5%;
+      }</style><link href=/static/css/app.5320606ddfac20fec77de50288c89314.css rel=stylesheet></head><body><div class=auth-wrapper><h1>Sign in to your project list</h1><div id=firebaseui-auth-container></div></div><script type=text/javascript src=/static/js/manifest.033753d83734ee15829a.js></script><script type=text/javascript src=/static/js/vendor.d4c3c79d1972248bbc98.js></script><script type=text/javascript src=/static/js/app.101ed6ac3b0c89a6fef2.js></script></body></html>
