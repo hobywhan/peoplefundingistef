@@ -5,10 +5,12 @@
   "author": "Hoby-whan CARPE <hobywhan@free.fr>",
   "private": true,
   "scripts": {
-    "start" : "node build/build.js && node build/dev-server.js",
+    "start": "node build/server.js",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "test": "",
+    "predeploy": "npm run build",
+    "postinstall": "rm -rf dist && mkdir -p dist && cp -r static dist/static && cross-env NODE_ENV=production webpack — progress — hide-modules — config build/webpack.prod.conf.js",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
