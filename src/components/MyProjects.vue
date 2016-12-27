@@ -1,26 +1,26 @@
 
 <template>
-  <div class="beer-list">
+  <div class="project-list">
     <div class="">
-      <h2>Your Beers:</h2>
-      <ul class='beer-list'>
-        <li class="beer-item" v-for="item in beerList | orderBy 'time' -1 ">
-          <h4 class="beer-title">{{ item.brewery }}, {{ item.beerName }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem($key)">X</button>
+      <h2>Your Projects:</h2>
+      <ul class='project-list'>
+        <li class="project-item" v-for="item in projectList | orderBy 'time' -1 ">
+          <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem($key)">X</button>
           <div class="stars">
             <img v-for="n in item.rating" class="star-img" src="../assets/star.png" alt="">
           </div>
         </li>
       </ul>
-    </div>    
+    </div>
   </div>
 </template>
 
 <script>
-  import firebase from 'firebase'
+import firebase from 'firebase'
 export default {
   data () {
     return {
-      beerList: [],
+      projectList: [],
       user: firebase.auth().currentUser
     }
   },
@@ -49,8 +49,12 @@ export default {
   ready: function () {
     var user = firebase.auth().currentUser
     var _this = this
-    firebase.database().ref('users/' + user.uid).on('value', function(snapshot) {
-      _this.beerList = snapshot.val()
+    firebase.database()
+    .ref('projects')
+    .orderByChild('creator')
+    .endAt(user.uid)
+    .on('value', function(snapshot) {
+      _this.projectList = snapshot.val()
     })
   }
 }
@@ -66,20 +70,19 @@ h1 {
   display: inline-block;
   margin-left: 10px;
 }
-.beer-title{
+.project-title{
   display: inline-block;
 }
 .star-img{
   width:20px;
 }
-.beer-item{
+.project-item{
   border-bottom: 1px dotted #999;
   padding-bottom: 10px;
 }
-.beer-list{
+.project-list{
   list-style: none;
   padding-left: 0;
 }
 
 </style>
-

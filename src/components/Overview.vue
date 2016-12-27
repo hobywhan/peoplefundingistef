@@ -1,7 +1,7 @@
 
 <template>
   <div class="overview">
-    <h2>Welcome to your beer list</h2>
+    <h2>Welcome to your project list</h2>
     <p v-if="authenticated">You are logged in</p>
     <p v-else>
       Sign on to start
@@ -30,4 +30,3 @@ h1 {
 }
 
 </style>
-

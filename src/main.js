@@ -3,8 +3,9 @@ import VueRouter from 'vue-router'
 // import firebase from 'firebase'
 import {fireInit} from './helpers/firebaseHelpers'
 import Overview from './components/Overview.vue'
-import BeerList from './components/BeerList.vue'
-import EnterBeer from './components/EnterBeer.vue'
+import ProjectList from './components/ProjectList.vue'
+import MyProjects from './components/MyProjects.vue'
+import EnterProject from './components/EnterProject.vue'
 import Mainmenu from './components/Mainmenu.vue'
 
 Vue.use(VueRouter)
@@ -36,12 +37,16 @@ function setRouter() {
 		 '/': {
 	        component: Overview
 	    },
-	    '/enterbeer': {
-	        component: EnterBeer,
+	    '/enterproject': {
+	        component: EnterProject,
 	        auth: true
 	    },
-	    '/beerlist': {
-	        component: BeerList,
+	    '/projectlist': {
+	        component: ProjectList,
+	        auth: true
+	    },
+	    '/myprojects': {
+	        component: MyProjects,
 	        auth: true
 	    }
 	})

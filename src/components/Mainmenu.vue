@@ -23,13 +23,18 @@ export default {
         'auth': true
       },
       {
-        'title': 'Beer List',
-        'id': '/beerlist',
+        'title': 'Project List',
+        'id': '/projectlist',
         'auth': false
       },
       {
-        'title': 'Enter Beer',
-        'id': '/enterbeer',
+        'title': 'My Projects',
+        'id': '/myprojects',
+        'auth': false
+      },
+      {
+        'title': 'Enter Project',
+        'id': '/enterproject',
         'auth': false
       }],
       cur: ' '

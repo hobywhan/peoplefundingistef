@@ -1,11 +1,11 @@
 
 <template>
-  <div class="enter-beer">
+  <div class="enter-project">
     <div class="">
-    <h2>Enter a beer:</h2>
+    <h2>Enter a project:</h2>
 
-      <input class="form-control" type="text" v-model="brewery" placeholder="Brewery"><br/>
-    <input class="form-control" type="text" v-model="beerName" placeholder="beerName"><br/>
+    <input class="form-control" type="text" v-model="projectTitle" placeholder="projectTitle"><br/>
+    <textarea class="form-control" v-model="projectDescription" placeholder="projectDescription"></textarea><br/>
     <h4 class="star-title">Rating:</h4>
     <div class="stars">
     <img class="star-img" :src="imagePath1" v-on:click="rate(0)" alt="">
@@ -27,8 +27,8 @@ export default {
   data () {
     return {
       stars: ['star_off', 'star_off', 'star_off', 'star_off', 'star_off'],
-      brewery: 'Brewery',
-      beerName: 'Beer Name',
+      projectTitle: 'Project Name',
+      projectDescription: 'Project Description',
       rating: 0
     }
   },
@@ -51,16 +51,17 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.brewery)
+      console.log(this.projectTitle)
       var user = firebase.auth().currentUser
       var d = Date.now()
-      firebase.database().ref('users/' + user.uid).push({
-        brewery: this.brewery,
-        beerName: this.beerName,
+      firebase.database().ref('projects').push({
+        projectTitle: this.projectTitle,
+        projectDescription: this.projectDescription,
         rating: this.rating,
-        time: d
+        time: d,
+        creator: user.uid
       })
-      this.$route.router.go({path: '/beerlist'})
+      this.$route.router.go({path: '/projectlist'})
     },
     rate(index){
       this.rating = index + 1
