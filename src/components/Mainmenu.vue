@@ -18,22 +18,22 @@ export default {
   data () {
     return {
       arrNav: [{
-        'title': 'Home',
+        'title': 'Accueil',
         'id': '/',
         'auth': true
       },
       {
-        'title': 'Project List',
+        'title': 'Liste des projets',
         'id': '/projectlist',
-        'auth': false
+        'auth': true
       },
       {
-        'title': 'My Projects',
+        'title': 'Mes projets',
         'id': '/myprojects',
         'auth': false
       },
       {
-        'title': 'Enter Project',
+        'title': 'Ajouter un projet',
         'id': '/enterproject',
         'auth': false
       }],
@@ -78,9 +78,6 @@ export default {
     display: inline-block;
     vertical-align: top;
     margin-left: 40px;
-  }
-  .container{
-    margin-left: 20px;
   }
 
 </style>

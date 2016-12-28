@@ -7,8 +7,10 @@ import ProjectList from './components/ProjectList.vue'
 import MyProjects from './components/MyProjects.vue'
 import EnterProject from './components/EnterProject.vue'
 import Mainmenu from './components/Mainmenu.vue'
+import VueFroala from 'vue-froala/vue-froala.es5'
 
 Vue.use(VueRouter)
+Vue.use(VueFroala)
 
 fireInit(fireStatus)
 var authenticated = false
@@ -20,7 +22,7 @@ const App = Vue.extend({
    }
   },
   template:
-    '<div class="col-xs-10 col-sm-4 container">' +
+    '<div class="container">' +
       '<main-menu :authenticated="authenticated"></main-menu>' +
       '<router-view :authenticated="authenticated"></router-view>' + // <- nested outlet
     '</div>',

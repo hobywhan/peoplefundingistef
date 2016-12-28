@@ -2,20 +2,30 @@
 <template>
   <div class="enter-project">
     <div class="">
-    <h2>Enter a project:</h2>
+    <h2>Ajouter un projet:</h2>
 
-    <input class="form-control" type="text" v-model="projectTitle" placeholder="projectTitle"><br/>
-    <textarea class="form-control" v-model="projectDescription" placeholder="projectDescription"></textarea><br/>
-    <h4 class="star-title">Rating:</h4>
-    <div class="stars">
-    <img class="star-img" :src="imagePath1" v-on:click="rate(0)" alt="">
-    <img class="star-img" :src="imagePath2" v-on:click="rate(1)" alt="">
-    <img class="star-img" :src="imagePath3" v-on:click="rate(2)" alt="">
-    <img class="star-img" :src="imagePath4" v-on:click="rate(3)" alt="">
-    <img class="star-img" :src="imagePath5" v-on:click="rate(4)" alt="">
-    </div><br/>
-    <button  class="btn btn-default submit-btn" v-on:click="submit()">Submit</button>
-     </div>
+      <input class="form-control" type="text" v-model="projectTitle" placeholder="projectTitle"><br/>
+      <textarea v-model="projectDescription" v-froala="froalaOptions" placeholder="projectDescription"></textarea>
+      <!-- <textarea :value="projectDescription" @input="update" placeholder="projectDescription"></textarea>
+      <textarea :value="projectDescription" @input="update" v-froala="froalaOptions" placeholder="projectDescription"></textarea>
+      <input type="text" @input="update">
+      <input type="text" v-model="projectDescription">
+      <div v-html="rawHtml">{{ projectDescription }}</div><br/> -->
+      <!-- textarea froala
+      <textarea v-model="projectDescription" v-froala></textarea><br/>
+      input
+      <input class="form-control" type="text" v-model="projectDescription" placeholder="projectDescription"><br/>
+      input froala
+      <input class="form-control" type="text" v-model="projectDescription" placeholder="projectDescription" v-froala><br/>
+      <div v-froala="froalaOptions" v-html="rawHtml" @input="update">{{projectDescription}}</div><br/>
+      textarea froala placeholder
+      <textarea class="form-control" v-model="projectDescription" placeholder="projectDescription" v-froala="froalaOptions"></textarea><br/>
+      textarea froala placeholder text
+      <textarea class="form-control" v-model="projectDescription" placeholder="projectDescription" v-froala="froalaOptions">{{projectDescription}}</textarea><br/>
+      textarea froala text
+      <textarea class="form-control" v-froala="froalaOptions">{{projectDescription}}</textarea><br/> -->
+      <button  class="btn btn-default submit-btn" v-on:click="submit()">Submit</button>
+    </div>
   </div>
 </template>
 
@@ -23,31 +33,30 @@
 import firebase from 'firebase'
 
 export default {
-  props: ['logstatus'],
   data () {
     return {
-      stars: ['star_off', 'star_off', 'star_off', 'star_off', 'star_off'],
-      projectTitle: 'Project Name',
-      projectDescription: 'Project Description',
-      rating: 0
+      projectTitle: 'Titre du projet',
+      projectDescription: 'Description du projet',
+      froalaOptions: {
+        toolbarButtons: ['bold', 'italic', 'underline', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'insertTable', '|', 'insertLink', 'insertImage', 'insertVideo', 'insertFile', '|', 'undo', 'redo', 'clearFormatting', 'fullscreen', '|', 'html'],
+        toolbarButtonsMD: ['bold', 'italic', 'underline', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'insertTable', '|', 'insertLink', '|', 'undo', 'redo', 'clearFormatting', '|', 'html'],
+        toolbarButtonsSM: ['bold', 'italic', 'underline', '|', 'insertLink', '|', 'undo', 'redo', 'clearFormatting'],
+        toolbarButtonsXS: ['bold', 'italic', 'underline', '|', 'insertLink', '|', 'undo', 'redo', 'clearFormatting'],
+        paragraphFormat: {
+            n: 'Normal',
+            h2: 'Heading 2',
+            h3: 'Heading 3',
+            h4: 'Heading 4',
+            blockquote: 'Quote',
+            pre: 'Code'
+        },
+        codeMirror: true,
+        height: 400,
+        theme: 'gray'
+      }
     }
   },
   computed: {
-    imagePath1: function () {
-      return require('../assets/' + this.stars[0] + '.png')
-    },
-    imagePath2: function () {
-      return require('../assets/' + this.stars[1] + '.png')
-    },
-    imagePath3: function () {
-      return require('../assets/' + this.stars[2] + '.png')
-    },
-    imagePath4: function () {
-      return require('../assets/' + this.stars[3] + '.png')
-    },
-    imagePath5: function () {
-      return require('../assets/' + this.stars[4] + '.png')
-    }
   },
   methods: {
     submit() {
@@ -63,16 +72,9 @@ export default {
       })
       this.$route.router.go({path: '/projectlist'})
     },
-    rate(index){
-      this.rating = index + 1
-      this.startTest = 'star'
-      for (var i = 0; i < 5; i++) {
-        if (index < i){
-          this.stars.$set(i, 'star_off')
-        } else {
-          this.stars.$set(i, 'star')
-        }
-      }
+    update: function(e) {
+      console.log(e)
+      this.projectDescription = e.target.value
     }
    },
   ready: function () {
@@ -98,5 +100,7 @@ h1 {
 .submit-btn{
   margin-top: 20px;
 }
-
+.fr-counter {
+  display: none;
+}
 </style>

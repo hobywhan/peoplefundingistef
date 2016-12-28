@@ -2,13 +2,12 @@
 <template>
   <div class="project-list">
     <div class="">
-      <h2>Your Projects:</h2>
+      <h2>Vos projets:</h2>
+      <pulse-loader v-if="isLoading"></pulse-loader>
       <ul class='project-list'>
         <li class="project-item" v-for="item in projectList | orderBy 'time' -1 ">
           <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem($key)">X</button>
-          <div class="stars">
-            <img v-for="n in item.rating" class="star-img" src="../assets/star.png" alt="">
-          </div>
+          <div v-html="rawHtml">{{ item.projectDescription }}</div>
         </li>
       </ul>
     </div>
@@ -17,10 +16,16 @@
 
 <script>
 import firebase from 'firebase'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+
 export default {
+  components: {
+    PulseLoader
+  },
   data () {
     return {
       projectList: [],
+      isLoading: true,
       user: firebase.auth().currentUser
     }
   },
@@ -49,12 +54,15 @@ export default {
   ready: function () {
     var user = firebase.auth().currentUser
     var _this = this
+    this.isLoading = true
     firebase.database()
     .ref('projects')
     .orderByChild('creator')
+    .startAt(user.uid)
     .endAt(user.uid)
     .on('value', function(snapshot) {
       _this.projectList = snapshot.val()
+      _this.isLoading = false
     })
   }
 }

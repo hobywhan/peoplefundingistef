@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Login page</title>
+    <title>Peoplefunding - Login page</title>
 
     <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
     <script>
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       // FirebaseUI config.
       var uiConfig = {
-        'signInSuccessUrl': '/index.html#!/enterproject',
+        'signInSuccessUrl': 'index.html',
         'signInOptions': [
           // Leave the lines as is for the providers you want to offer your users.
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -51,7 +51,7 @@
     <!-- The surrounding HTML is left untouched by FirebaseUI.
          Your app may use that space for branding, controls and other customizations.-->
     <div class="auth-wrapper">
-      <h1>Sign in to your project list</h1>
+      <h1>Connectez-vous pour partager et gérer vos projets</h1>
       <div id="firebaseui-auth-container"></div>
     </div>
   </body>
