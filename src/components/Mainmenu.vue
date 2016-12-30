@@ -2,17 +2,19 @@
 <template>
   <div class="main-menu">
      <ul class="nav nav-pills">
-      <li role="presentation" v-for="item in arrNav" v-link-active v-if="item.auth || authenticated">
-        <a v-link="{ name: item.name, exact: true }">{{ item.title}}</a>
-      </li>
+      <router-link role="presentation" tag="li" v-for="item in arrNav" v-if="item.auth || authenticated" :to="{ name: item.name }" exact>
+        <a>{{ item.title }}</a>
+      </router-link>
      </ul>
-      <button  v-if="authenticated" class="btn btn-default log-btn" v-on:click="logout()">Log Out</button>
-      <button  v-else class="btn btn-default log-btn" v-on:click="login()">Log In</button>
+      <button  v-if="authenticated" class="btn btn-default log-btn" v-on:click="logout()">Déconnexion</button>
+      <button  v-else class="btn btn-default log-btn" v-on:click="login()">Connexion</button>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
+import {router, AuthenticatedState} from '../main.js'
+
 export default {
   props: ['authenticated'],
   data () {
@@ -40,25 +42,30 @@ export default {
         'id': '/enterproject',
         'name': 'newProject',
         'auth': false
+      },
+      {
+        'title': 'Mon compte',
+        'id': '/myaccount',
+        'name': 'account',
+        'auth': false
       }],
       cur: ' '
     }
   },
   methods: {
     login() {
-      this.$route.router.go({path: '/login'})
+      router.push({path: '/login'})
     },
     logout() {
-      let _this = this
       firebase.auth().signOut().then(function() {
-        _this.$route.router.go({path: '/', params: { authenticated: false }})
-        window.location.reload()
+        AuthenticatedState.$emit('toggle', false)
+        router.push({path: '/'})
       }, function(error) {
         console.log(error)
       })
     }
    },
-  ready: function () {
+  mounted: function () {
   }
 }
 
@@ -66,7 +73,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .main-menu li{
+  .main-menu li, .main-menu router-link{
     display: inline-block;
   }
   .nav-pills{

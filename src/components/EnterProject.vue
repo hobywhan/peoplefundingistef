@@ -19,6 +19,7 @@
 <script>
 import firebase from 'firebase'
 import tinymce from 'vue-tinymce/src/tinymce.vue'
+import {router} from '../main.js'
 
 export default {
   data () {
@@ -44,14 +45,14 @@ export default {
         time: d,
         creator: user.uid
       })
-      this.$route.router.go({path: '/projectlist'})
+      router.push({path: '/projectlist'})
     },
     update: function(e) {
       console.log(e)
       this.projectDescription = e.target.value
     }
    },
-  ready: function () {
+  mounted: function () {
   }
 }
 

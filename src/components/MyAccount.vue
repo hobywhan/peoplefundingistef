@@ -1,10 +1,10 @@
 
 <template>
-  <div class="project-show">
+  <div class="user-show">
     <div class="">
       <pulse-loader v-if="isLoading"></pulse-loader>
-      <h2 class="project-title">{{ project.projectTitle }}</h2>
-      <div v-html="project.projectDescription"></div>
+      <h2 class="user-title">{{ user.displayName }}</h2>
+      <p>{{ user.email }}</p>
     </div>
   </div>
 </template>
@@ -18,19 +18,19 @@ export default {
   },
   data () {
     return {
-      project: [],
       user: firebase.auth().currentUser
     }
   },
   methods: {
   },
   mounted: function () {
-    let projectId = this.$route.params.projectId
+    let userId = this.user.uid
     // var user = firebase.auth().currentUser
     var _this = this
     LoadingState.$emit('toggle', true)
-    firebase.database().ref('projects/' + projectId).on('value', function(snapshot) {
-      _this.project = snapshot.val()
+    firebase.database().ref('users/' + userId).on('value', function(snapshot) {
+      console.log(snapshot.val())
+      _this.user = snapshot.val()
       LoadingState.$emit('toggle', false)
     })
   }
@@ -40,7 +40,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.project-title{
+.user-title{
   display: inline-block;
 }
 </style>

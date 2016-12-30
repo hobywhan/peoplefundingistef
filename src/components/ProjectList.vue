@@ -5,10 +5,10 @@
       <h2>Tous les projets :</h2>
       <pulse-loader v-if="isLoading"></pulse-loader>
       <ul class='project-list'>
-        <li class="project-item" v-for="item in projectList | orderBy 'time' -1 ">
+        <li class="project-item" v-for="item in projectList">
           <h4 class="project-title">{{ item.projectTitle }}</h4>
           <div v-html="item.projectDescription"></div>
-          <button v-link="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</button>
+          <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
         </li>
       </ul>
     </div>
@@ -17,32 +17,30 @@
 
 <script>
 import firebase from 'firebase'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import {LoadingState} from '../main.js'
 
 export default {
   components: {
-    PulseLoader
   },
   data () {
     return {
       projectList: [],
-      isLoading: true,
       user: firebase.auth().currentUser
     }
   },
   methods: {
   },
-  ready: function () {
+  mounted: function () {
     // var user = firebase.auth().currentUser
     var _this = this
-    this.isLoading = true
+    LoadingState.$emit('toggle', true)
     firebase.database().ref('projects').on('value', function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var childData = childSnapshot.val()
         childData.uid = childSnapshot.key
         _this.projectList.push(childData)
       })
-      _this.isLoading = false
+      LoadingState.$emit('toggle', false)
     })
   }
 }

@@ -10,7 +10,7 @@ export default {
     return {
     }
   },
-  ready: function () {
+  mounted: function () {
   }
 }
 

@@ -5,9 +5,10 @@
       <h2>Vos projets:</h2>
       <pulse-loader v-if="isLoading"></pulse-loader>
       <ul class='project-list'>
-        <li class="project-item" v-for="item in projectList | orderBy 'time' -1 ">
-          <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem($key)">X</button>
+        <li class="project-item" v-for="item in projectList">
+          <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(key)">X</button>
           <div v-html="item.projectDescription"></div>
+          <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
         </li>
       </ul>
     </div>
@@ -16,16 +17,14 @@
 
 <script>
 import firebase from 'firebase'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import {LoadingState} from '../main.js'
 
 export default {
   components: {
-    PulseLoader
   },
   data () {
     return {
       projectList: [],
-      isLoading: true,
       user: firebase.auth().currentUser
     }
   },
@@ -42,10 +41,10 @@ export default {
           })
     }
   },
-  ready: function () {
+  mounted: function () {
     var user = firebase.auth().currentUser
     var _this = this
-    this.isLoading = true
+    LoadingState.$emit('toggle', true)
     firebase.database()
     .ref('projects')
     .orderByChild('creator')
@@ -57,7 +56,7 @@ export default {
         childData.uid = childSnapshot.key
         _this.projectList.push(childData)
       })
-      _this.isLoading = false
+      LoadingState.$emit('toggle', false)
     })
   }
 }

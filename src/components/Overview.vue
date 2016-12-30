@@ -9,7 +9,8 @@
           <h2>Les 5 derniers projets créés:</h2>
           <pulse-loader v-if="isLoading"></pulse-loader>
           <ul class='project-list'>
-            <li class="project-item" v-for="item in projectList | orderBy 'time' -1 ">
+            <!-- TODO : sort by time desc, change all for with (key, item) -->
+            <li class="project-item" v-for="item in projectList">
               <h4 class="project-title">{{ item.projectTitle }}</h4>
             </li>
           </ul>
@@ -18,36 +19,34 @@
     </div>
     <p v-else>
       Connectez-vous pour commencer
-    </div>
   </p>
+</div>
 </template>
 
 <script>
 import firebase from 'firebase'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import {LoadingState} from '../main.js'
 
 export default {
   components: {
-    PulseLoader
   },
   props: ['authenticated', 'uifirebase'],
   data () {
     return {
       projectList: [],
-      isLoading: true,
       msg: 'Hello World!'
     }
   },
-  ready: function () {
+  mounted: function () {
     var _this = this
-    this.isLoading = true
+    LoadingState.$emit('toggle', true)
     firebase.database()
     .ref('projects')
     .orderByChild('time')
     .limitToLast(5)
     .on('value', function(snapshot) {
       _this.projectList = snapshot.val()
-      _this.isLoading = false
+      LoadingState.$emit('toggle', false)
     })
   }
 }

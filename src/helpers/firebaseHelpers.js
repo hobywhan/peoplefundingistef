@@ -1,6 +1,7 @@
 import firebase from 'firebase'
+import {LoadingState, AuthenticatedState} from '../main.js'
 
-export function fireInit(func) {
+export function fireInit() {
 	var config = {
 		apiKey: 'AIzaSyDwJ1XZk23i79ePjEd5jXqBw_fObVGscUQ',
     authDomain: 'peoplefundingistef.firebaseapp.com',
@@ -11,10 +12,21 @@ export function fireInit(func) {
 	firebase.initializeApp(config)
 
 	firebase.auth().onAuthStateChanged(function (user) {
+		LoadingState.$emit('toggle', true)
 	  if (user) {
-	    func(true, user)
+			let newUser = {
+				displayName: user.displayName ? user.displayName : '',
+				email: user.email ? user.email : '',
+				emailVerified: user.emailVerified ? user.emailVerified : '',
+				photoURL: user.photoURL ? user.photoURL : '',
+				uid: user.uid ? user.uid : '',
+				accessToken: user.accessToken ? user.accessToken : '',
+				providerData: user.providerData ? user.providerData : ''
+			}
+			firebase.database().ref('users/' + user.uid).set(newUser)
+			AuthenticatedState.$emit('toggle', true)
 	  } else {
-	    func(false)
+			AuthenticatedState.$emit('toggle', false)
 	  }
 	}, function(error) {
 	  console.log(error)
