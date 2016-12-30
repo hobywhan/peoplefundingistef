@@ -1,7 +1,6 @@
 import firebase from 'firebase'
 
 export function fireInit(func) {
-	// !!!! Replace with your own Firebase settings !!!!!
 	var config = {
 		apiKey: 'AIzaSyDwJ1XZk23i79ePjEd5jXqBw_fObVGscUQ',
     authDomain: 'peoplefundingistef.firebaseapp.com',

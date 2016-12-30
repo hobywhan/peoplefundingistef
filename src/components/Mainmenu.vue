@@ -3,7 +3,7 @@
   <div class="main-menu">
      <ul class="nav nav-pills">
       <li role="presentation" v-for="item in arrNav" v-link-active v-if="item.auth || authenticated">
-        <a v-link="{ path: item.id, exact: true }">{{ item.title}}</a>
+        <a v-link="{ name: item.name, exact: true }">{{ item.title}}</a>
       </li>
      </ul>
       <button  v-if="authenticated" class="btn btn-default log-btn" v-on:click="logout()">Log Out</button>
@@ -20,21 +20,25 @@ export default {
       arrNav: [{
         'title': 'Accueil',
         'id': '/',
+        'name': 'home',
         'auth': true
       },
       {
         'title': 'Liste des projets',
         'id': '/projectlist',
+        'name': 'listProject',
         'auth': true
       },
       {
         'title': 'Mes projets',
         'id': '/myprojects',
+        'name': 'userProject',
         'auth': false
       },
       {
         'title': 'Ajouter un projet',
         'id': '/enterproject',
+        'name': 'newProject',
         'auth': false
       }],
       cur: ' '
@@ -42,12 +46,13 @@ export default {
   },
   methods: {
     login() {
-      window.location.href = 'auth.html'
+      this.$route.router.go({path: '/login'})
     },
     logout() {
-      console.log('out')
+      let _this = this
       firebase.auth().signOut().then(function() {
-        window.location.href = '/auth.html'
+        _this.$route.router.go({path: '/', params: { authenticated: false }})
+        window.location.reload()
       }, function(error) {
         console.log(error)
       })
@@ -61,10 +66,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  h1 {
-    color: #FF0000;
-  }
-
   .main-menu li{
     display: inline-block;
   }

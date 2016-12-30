@@ -1,46 +1,60 @@
 
 <template>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
   <div class="auth-wrapper">
-    <h1>Connectez-vous pour partager et gérer vos projets</h1>
+    <h4>Connectez-vous pour partager et gérer vos projets</h4>
     <div id="firebaseui-auth-container"></div>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
-import firebaseui from 'firebaseui'
 
 export default {
+  props: ['authenticated', 'uifirebase'],
   data () {
     return {
     }
   },
   ready: function () {
+    if (this.authenticated) {
+      this.$route.router.go({path: '/', params: { authenticated: true }})
+      return
+    }
+    var _this = this
     // FirebaseUI config.
     var uiConfig = {
-      'signInSuccessUrl': '/index.html#!/projectlist',
+      'callbacks': {
+        signInSuccess: function(currentUser, credential, redirectUrl) {
+          console.log(currentUser, credential, redirectUrl)
+          _this.$route.router.go({path: '/', params: { authenticated: true }})
+          window.location.reload()
+          _this.fireStatus(true, currentUser)
+          return true
+        }
+      },
+      // 'credentialHelper': firebaseui.auth.CredentialHelper.NONE,
+      // 'signInFlow': 'popup',
+      'signInSuccessUrl': '/#!/',
       'signInOptions': [
         // Leave the lines as is for the providers you want to offer your users.
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID
         //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
         //firebase.auth.GithubAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       // Terms of service url.
-      'tosUrl': 'tos.html',
-    };
-
-    // Initialize the FirebaseUI Widget using Firebase.
-    var ui = firebaseui.auth.AuthUI(firebase.auth());
+      'tosUrl': '/#!/terms'
+    }
     // The start method will wait until the DOM is loaded.
-    ui.start('#firebaseui-auth-container', uiConfig);
+    // _this.uifirebase.reset()
+    _this.uifirebase.start('#firebaseui-auth-container', uiConfig)
   }
 }
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .auth-wrapper {
    width:350px;

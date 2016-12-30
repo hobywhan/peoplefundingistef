@@ -30,7 +30,7 @@ export default {
   components: {
     PulseLoader
   },
-  props: ['authenticated'],
+  props: ['authenticated', 'uifirebase'],
   data () {
     return {
       projectList: [],
@@ -56,8 +56,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  color: #FF0000;
-}
-
 </style>

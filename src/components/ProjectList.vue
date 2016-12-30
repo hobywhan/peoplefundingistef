@@ -6,8 +6,9 @@
       <pulse-loader v-if="isLoading"></pulse-loader>
       <ul class='project-list'>
         <li class="project-item" v-for="item in projectList | orderBy 'time' -1 ">
-          <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem($key)">X</button>
-          <div v-html="rawHtml">{{ item.projectDescription }}</div>
+          <h4 class="project-title">{{ item.projectTitle }}</h4>
+          <div v-html="item.projectDescription"></div>
+          <button v-link="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</button>
         </li>
       </ul>
     </div>
@@ -30,33 +31,17 @@ export default {
     }
   },
   methods: {
-   logout() {
-      console.log('out')
-      firebase.auth().signOut().then(function() {
-        window.location.href = '/auth.html'
-      }, function(error) {
-        console.log(error)
-      })
-    },
-    deleteItem(key) {
-      console.log('delete: ' + key)
-      var user = firebase.auth().currentUser
-      var adaRef = firebase.database().ref('users/' + user.uid + '/' + key)
-        adaRef.remove()
-          .then(function() {
-            console.log('Remove succeeded.')
-          })
-          .catch(function(error) {
-            console.log('Remove failed: ' + error.message)
-          })
-    }
-   },
+  },
   ready: function () {
     // var user = firebase.auth().currentUser
     var _this = this
     this.isLoading = true
     firebase.database().ref('projects').on('value', function(snapshot) {
-      _this.projectList = snapshot.val()
+      snapshot.forEach(function(childSnapshot) {
+        var childData = childSnapshot.val()
+        childData.uid = childSnapshot.key
+        _this.projectList.push(childData)
+      })
       _this.isLoading = false
     })
   }
@@ -66,18 +51,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  color: #FF0000;
-}
 .close-btn{
   display: inline-block;
   margin-left: 10px;
 }
 .project-title{
   display: inline-block;
-}
-.star-img{
-  width:20px;
 }
 .project-item{
   border-bottom: 1px dotted #999;

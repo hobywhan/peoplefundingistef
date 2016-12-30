@@ -29,11 +29,6 @@ module.exports = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'auth.html',
-      template: 'auth.html',
-      inject: true
     })
   ]
 })
