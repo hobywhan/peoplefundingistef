@@ -7,7 +7,6 @@
       <div class="project-list">
         <div class="">
           <h2>Les 5 derniers projets créés:</h2>
-          <pulse-loader v-if="isLoading"></pulse-loader>
           <ul class='project-list'>
             <!-- TODO : sort by time desc, change all for with (key, item) -->
             <li class="project-item" v-for="item in projectList">
@@ -24,10 +23,11 @@
 </template>
 
 <script>
+import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
 
-export default {
+export default Vue.extend({
   components: {
   },
   props: ['authenticated', 'uifirebase'],
@@ -49,7 +49,7 @@ export default {
       LoadingState.$emit('toggle', false)
     })
   }
-}
+})
 
 </script>
 

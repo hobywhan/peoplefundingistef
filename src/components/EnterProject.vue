@@ -2,59 +2,130 @@
 <template>
   <div class="enter-project">
     <div class="">
+      <form>
     <h2>Ajouter un projet:</h2>
+      <input class="form-control" type="text" v-model="project.title" placeholder="project.title"><br />
+      
+      <textarea v-model="project.description" placeholder="project.description"></textarea><br />
 
-      <input class="form-control" type="text" v-model="projectTitle" placeholder="projectTitle"><br/>
-      <!-- <div id="xxx">
-        <tinymce content='{{projectDescription}}' :options='options' @change="update"></tinymce>
-      </div> -->
-      <textarea id="newProjectDescription" v-model="projectDescription" placeholder="projectDescription"></textarea>
+      <div id="xxx">
+        <tinymce content='project.content' :options="options" @change="update"></tinymce>
+      </div>
+
+      <tinymce-editor v-model="project.content"></tinymce-editor><br />
+
+      <input type="file" @change="loadFile" /><br />
+      Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
+      <span v-if="!project.image">Pas image selectionnée<br /></span>
+
+      <!-- <textarea id="newProjectDescription" v-model="projectDescription" placeholder="projectDescription"></textarea> -->
       <!-- <vue-html5-editor :content="projectDescription" :height="500" @change="update"></vue-html5-editor> -->
-      <p v-html="projectDescription"></div>
-      <button  class="btn btn-default submit-btn" v-on:click="submit()">Submit</button>
+
+      <p v-html="project.content">
+      <button  class="btn btn-default submit-btn" v-on:click="submit()" :disabled="!canSubmit" @click.prevent="submitForm">Ajouter</button>
     </div>
+  </form>
   </div>
 </template>
 
 <script>
+import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
-import tinymce from 'vue-tinymce/src/tinymce.vue'
+// import tinymce from 'vue-tinymce/src/vue-tinymce'
 import {router} from '../main.js'
+import tinymceeditor from './TinymceEditor.vue'
 
-export default {
+// var tinymceeditor = Vue.component('tinymce-editor', {
+//   template: '<textarea :id="id" v-model="editorContent"></textarea>',
+//   props: [
+//     'value'
+//   ],
+//   data () {
+//     return {
+//       id: ''
+//     }
+//   },
+//   computed: {
+//     editorContent: {
+//       get () {
+//         return this.value
+//       },
+//       set (newVal) {
+//         this.$emit('input', newVal)
+//       }
+//     }
+//   },
+//   created () {
+//     const d = new Date()
+//     this.id = 'id_' + d.getTime()
+//     tinymce.init({
+//       selector: '#' + this.id,
+//       setup: (editor) => {
+//         // 'change' can be used instead of 'keyup' to only update once you click outside the editor
+//         editor.on('keyup', () => {
+//           this.$emit('input', editor.getContent())
+//         })
+//       }
+//     })
+//   }
+// })
+export default Vue.extend({
   data () {
     return {
-      projectTitle: 'Titre du projet',
-      projectDescription: 'Description du projet'
+      canSubmit: true,
+      project: {
+        title: 'Titre du projet',
+        description: 'Description du projet',
+        content: 'Contenu du projet',
+        image: ''
+      }
     }
   },
   computed: {
   },
   components: {
-    'tinymce': tinymce
+    // 'tinymce': tinymce,
+    'tinymce-editor': tinymceeditor
   },
   methods: {
     submit() {
-      console.log(this.projectTitle)
+      console.log(this.project.title)
+      var _this = this
       var user = firebase.auth().currentUser
-      var d = Date.now()
       firebase.database().ref('projects').push({
-        projectTitle: this.projectTitle,
-        projectDescription: this.projectDescription,
-        rating: this.rating,
-        time: d,
+        title: _this.project.title,
+        description: _this.project.description,
+        image: _this.project.image,
+        time: Date.now(),
         creator: user.uid
       })
       router.push({path: '/projectlist'})
     },
     update: function(e) {
       console.log(e)
-      this.projectDescription = e.target.value
+      this.project.description = e.target.value
+    },
+    loadFile (e) {
+      this.canSubmit = false // FileReader is async, prevent form submit untill image is loaded
+      let file = e.target.files[0] || e.dataTransfer.files[0]
+
+      if (!file) {
+        return
+      }
+
+      let reader = new FileReader()
+      reader.onload = (e) => {
+        this.project.image = e.target.result
+        this.canSubmit = true
+      }
+      reader.readAsDataURL(file) // File as Base64
+      // reader.readAsBinaryString(file) // File as raw binary data
+      // reader..readAsText(file) // File as raw string
     }
    },
   mounted: function () {
   }
-}
+})
 
 </script>
 

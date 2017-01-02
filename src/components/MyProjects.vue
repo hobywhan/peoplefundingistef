@@ -3,7 +3,6 @@
   <div class="project-list">
     <div class="">
       <h2>Vos projets:</h2>
-      <pulse-loader v-if="isLoading"></pulse-loader>
       <ul class='project-list'>
         <li class="project-item" v-for="item in projectList">
           <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(key)">X</button>
@@ -16,10 +15,11 @@
 </template>
 
 <script>
+import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
 
-export default {
+export default Vue.extend({
   components: {
   },
   data () {
@@ -59,7 +59,7 @@ export default {
       LoadingState.$emit('toggle', false)
     })
   }
-}
+})
 
 </script>
 

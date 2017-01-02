@@ -29,7 +29,7 @@ const routes = [
      component: ProjectShow,
      name: 'showProject',
      meta: {
-       auth: true
+       auth: false
      }
  },
  {

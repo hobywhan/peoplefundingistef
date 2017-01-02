@@ -1,18 +1,19 @@
 <template>
   <div class="tos">
-    Les termes du service 
+    Les termes du service
   </div>
 </template>
 
 <script>
-export default {
+import Vue from 'vue/dist/vue'
+export default Vue.extend({
   data () {
     return {
     }
   },
   mounted: function () {
   }
-}
+})
 
 </script>
 

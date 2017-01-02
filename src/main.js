@@ -3,23 +3,21 @@ import VueRouter from 'vue-router'
 // import firebase from 'firebase'
 import {fireInit} from './helpers/firebaseHelpers'
 import Mainmenu from './components/Mainmenu.vue'
-import VueFroala from 'vue-froala/vue-froala.es5'
-import VueTinymce from 'vue-tinymce'
-import VueHtml5Editor from 'vue-html5-editor'
+// import VueFroala from 'vue-froala/vue-froala.es5'
+import VueTinymce from 'vue-tinymce/src/vue-tinymce'
+// import VueHtml5Editor from 'vue-html5-editor'
 import firebase from 'firebase'
 import firebaseui from 'firebaseui'
 import Loader from './components/Loader.vue'
 
 Vue.use(VueRouter)
-Vue.use(VueFroala)
+// Vue.use(VueFroala)
 Vue.use(VueTinymce)
-Vue.use(VueHtml5Editor)
+// Vue.use(VueHtml5Editor)
 
 fireInit()
-uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
 
-var authenticated = false
-var uifirebase
+var uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
 
 export const LoadingState = new Vue()
 export const AuthenticatedState = new Vue()
@@ -30,20 +28,12 @@ export const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'active'
 })
-router.beforeEach((route, redirect, next) => {
-  if (route.meta.auth && !App.authenticated) {
-    redirect('/')
-  } else {
-    next()
-  }
-  return next()
-})
 
 export const App = new Vue({
   router,
   components: {
     'main-menu': Mainmenu,
-    Loader
+    'loader': Loader
   },
   template:
   '<div class="container">' +
@@ -54,7 +44,7 @@ export const App = new Vue({
   data(){
     return {
       isLoading: true,
-      authenticated: authenticated,
+      authenticated: false,
       uifirebase: uifirebase
     }
   },
@@ -67,3 +57,12 @@ export const App = new Vue({
     })
   }
 }).$mount('#app')
+
+router.beforeEach((route, redirect, next) => {
+  if (route.meta.auth && !App.authenticated) {
+    redirect('/')
+  } else {
+    next()
+  }
+  return next()
+})

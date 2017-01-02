@@ -2,7 +2,6 @@
 <template>
   <div class="user-show">
     <div class="">
-      <pulse-loader v-if="isLoading"></pulse-loader>
       <h2 class="user-title">{{ user.displayName }}</h2>
       <p>{{ user.email }}</p>
     </div>
@@ -10,10 +9,11 @@
 </template>
 
 <script>
+import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
 
-export default {
+export default Vue.extend({
   components: {
   },
   data () {
@@ -34,7 +34,7 @@ export default {
       LoadingState.$emit('toggle', false)
     })
   }
-}
+})
 
 </script>
 

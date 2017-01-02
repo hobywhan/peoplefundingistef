@@ -6,12 +6,15 @@
 export default {
   data () {
     return {
+      msg: 'Chargement ...'
     }
+  },
+  mounted: function () {
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 $vue-green: #41b883;
 
 .loader {

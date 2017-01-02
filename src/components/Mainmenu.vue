@@ -12,10 +12,11 @@
 </template>
 
 <script>
+import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {router, AuthenticatedState} from '../main.js'
 
-export default {
+export default Vue.extend({
   props: ['authenticated'],
   data () {
     return {
@@ -67,7 +68,7 @@ export default {
    },
   mounted: function () {
   }
-}
+})
 
 </script>
 
