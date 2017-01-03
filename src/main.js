@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import {fireInit} from './helpers/firebaseHelpers'
 import Mainmenu from './components/Mainmenu.vue'
 // import VueFroala from 'vue-froala/vue-froala.es5'
-import VueTinymce from 'vue-tinymce/src/vue-tinymce'
+// import VueTinymce from 'vue-tinymce/src/vue-tinymce'
 // import VueHtml5Editor from 'vue-html5-editor'
 import firebase from 'firebase'
 import firebaseui from 'firebaseui'
@@ -12,12 +12,12 @@ import Loader from './components/Loader.vue'
 
 Vue.use(VueRouter)
 // Vue.use(VueFroala)
-Vue.use(VueTinymce)
+// Vue.use(VueTinymce)
 // Vue.use(VueHtml5Editor)
 
-fireInit()
-
-var uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
+// fireInit()
+//
+// var uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
 
 export const LoadingState = new Vue()
 export const AuthenticatedState = new Vue()
@@ -45,8 +45,13 @@ export const App = new Vue({
     return {
       isLoading: true,
       authenticated: false,
-      uifirebase: uifirebase
+      uifirebase: null
     }
+  },
+  beforeMount: function() {
+  	LoadingState.$emit('toggle', true)
+    fireInit()
+    this.uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
   },
   created(){
     LoadingState.$on('toggle', (isLoading) => {
@@ -60,7 +65,7 @@ export const App = new Vue({
 
 router.beforeEach((route, redirect, next) => {
   if (route.meta.auth && !App.authenticated) {
-    redirect('/')
+    next('/')
   } else {
     next()
   }

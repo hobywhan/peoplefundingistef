@@ -1,7 +1,5 @@
 <template>
-  <div class="tos">
-    Les termes du service
-  </div>
+  <div class="tos">{{msg}}</div>
 </template>
 
 <script>
@@ -9,6 +7,7 @@ import Vue from 'vue/dist/vue'
 export default Vue.extend({
   data () {
     return {
+      msg: 'Les services :'
     }
   },
   mounted: function () {

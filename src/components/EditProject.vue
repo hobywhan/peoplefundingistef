@@ -35,44 +35,11 @@ import firebase from 'firebase'
 import {router} from '../main.js'
 import tinymceeditor from './TinymceEditor.vue'
 
-// var tinymceeditor = Vue.component('tinymce-editor', {
-//   template: '<textarea :id="id" v-model="editorContent"></textarea>',
-//   props: [
-//     'value'
-//   ],
-//   data () {
-//     return {
-//       id: ''
-//     }
-//   },
-//   computed: {
-//     editorContent: {
-//       get () {
-//         return this.value
-//       },
-//       set (newVal) {
-//         this.$emit('input', newVal)
-//       }
-//     }
-//   },
-//   created () {
-//     const d = new Date()
-//     this.id = 'id_' + d.getTime()
-//     tinymce.init({
-//       selector: '#' + this.id,
-//       setup: (editor) => {
-//         // 'change' can be used instead of 'keyup' to only update once you click outside the editor
-//         editor.on('keyup', () => {
-//           this.$emit('input', editor.getContent())
-//         })
-//       }
-//     })
-//   }
-// })
 export default Vue.extend({
   data () {
     return {
       canSubmit: true,
+      projectId: $route.params.projectId,
       project: {
         title: 'Titre du projet',
         description: 'Description du projet',

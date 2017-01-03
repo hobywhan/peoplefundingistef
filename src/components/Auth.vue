@@ -19,7 +19,7 @@ export default Vue.extend({
     return {
     }
   },
-  mounted: function () {
+  created: function () {
     if (this.authenticated) {
       router.push({path: '/'})
       return

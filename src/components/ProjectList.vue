@@ -24,14 +24,12 @@ export default Vue.extend({
   },
   data () {
     return {
-      projectList: [],
-      user: firebase.auth().currentUser
+      projectList: []
     }
   },
   methods: {
   },
-  mounted: function () {
-    // var user = firebase.auth().currentUser
+  created: function () {
     var _this = this
     LoadingState.$emit('toggle', true)
     firebase.database().ref('projects').on('value', function(snapshot) {

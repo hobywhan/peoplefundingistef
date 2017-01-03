@@ -19,18 +19,16 @@ export default Vue.extend({
   data () {
     return {
       project: [],
-      user: firebase.auth().currentUser
+      user: firebase.auth().currentUser,
+      projectId: $route.params.projectId
     }
   },
   methods: {
   },
   mounted: function () {
-    let projectId = this.$route.params.projectId
-      console.log(projectId)
-    // var user = firebase.auth().currentUser
     var _this = this
     LoadingState.$emit('toggle', true)
-    firebase.database().ref('projects/' + projectId).on('value', function(snapshot) {
+    firebase.database().ref('projects/' + this.projectId).on('value', function(snapshot) {
       _this.project = snapshot.val()
       LoadingState.$emit('toggle', false)
     })

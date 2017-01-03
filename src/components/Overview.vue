@@ -37,7 +37,7 @@ export default Vue.extend({
       msg: 'Hello World!'
     }
   },
-  mounted: function () {
+  created: function () {
     var _this = this
     LoadingState.$emit('toggle', true)
     firebase.database()

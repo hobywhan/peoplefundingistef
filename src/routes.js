@@ -2,10 +2,15 @@ import Overview from './components/Overview.vue'
 import ProjectList from './components/ProjectList.vue'
 import MyProjects from './components/MyProjects.vue'
 import EnterProject from './components/EnterProject.vue'
+import EditProject from './components/EditProject.vue'
 import ProjectShow from './components/ProjectShow.vue'
 import MyAccount from './components/MyAccount.vue'
+import EditAccount from './components/EditAccount.vue'
 import Auth from './components/Auth.vue'
 import TermsOfService from './components/TermsOfService.vue'
+import CategoryList from './components/CategoryList.vue'
+import TagList from './components/TagList.vue'
+import Payment from './components/Payment.vue'
 
 const routes = [
  {
@@ -20,6 +25,14 @@ const routes = [
      path: '/enterproject',
      component: EnterProject,
      name: 'newProject',
+     meta: {
+       auth: true
+     }
+ },
+ {
+     path: '/editproject/:projectId',
+     component: EditProject,
+     name: 'editProject',
      meta: {
        auth: true
      }
@@ -54,6 +67,38 @@ const routes = [
      name: 'account',
      meta: {
        auth: true
+     }
+ },
+ {
+     path: '/editaccount',
+     component: EditAccount,
+     name: 'editAccount',
+     meta: {
+       auth: true
+     }
+ },
+ {
+     path: '/categorylist',
+     component: CategoryList,
+     name: 'listCategory',
+     meta: {
+       auth: true
+     }
+ },
+ {
+     path: '/taglist',
+     component: TagList,
+     name: 'listTag',
+     meta: {
+       auth: true
+     }
+ },
+ {
+     path: '/payment',
+     component: Payment,
+     name: 'payment',
+     meta: {
+       auth: false
      }
  },
  {
