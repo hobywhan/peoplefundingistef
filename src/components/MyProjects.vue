@@ -1,18 +1,14 @@
 
 <template>
   <div class="project-list">
-    {{authenticated ? 'true' : 'false'}}
-    {{$parent.authenticated ? 'true' : 'false'}}
-    <div class="">
-      <h2>Vos projets:</h2>
-      <ul class='project-list'>
-        <li class="project-item" v-for="(item, key) in projectList">
-          <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
-          <div v-html="item.projectDescription"></div>
-          <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
-        </li>
-      </ul>
-    </div>
+    <h2>Vos projets:</h2>
+    <ul class='project-list'>
+      <li class="project-item" v-for="(item, key) in projectList">
+        <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
+        <div v-html="item.projectDescription"></div>
+        <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
