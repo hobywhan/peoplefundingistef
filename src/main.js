@@ -35,12 +35,6 @@ export const App = new Vue({
     'main-menu': Mainmenu,
     'loader': Loader
   },
-  template:
-  '<div class="container">' +
-    '<main-menu :authenticated="authenticated" :uifirebase="uifirebase"></main-menu>' +
-    '<loader v-show="isLoading"></loader>' +
-    '<router-view :authenticated="authenticated" :uifirebase="uifirebase"></router-view>' +
-  '</div>',
   data(){
     return {
       isLoading: true,
@@ -48,6 +42,12 @@ export const App = new Vue({
       uifirebase: null
     }
   },
+  template:
+  '<div class="container">' +
+    '<main-menu :authenticated="authenticated" :uifirebase="uifirebase"></main-menu>' +
+    '<loader v-show="isLoading"></loader>' +
+    '<router-view :authenticated="authenticated" :uifirebase="uifirebase"></router-view>' +
+  '</div>',
   beforeMount: function() {
   	LoadingState.$emit('toggle', true)
     fireInit()

@@ -36,5 +36,6 @@ export function fireInit() {
 		LoadingState.$emit('toggle', false)
 	}, function(error) {
 	  console.log(error)
+		LoadingState.$emit('toggle', false)
 	})
 }

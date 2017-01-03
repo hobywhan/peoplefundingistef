@@ -40,6 +40,7 @@ export default Vue.extend({
     var _this = this
     LoadingState.$emit('toggle', true)
     firebase.database().ref('tags').on('value', function(snapshot) {
+      _this.tagList = []
       snapshot.forEach(function(childSnapshot) {
         var childData = childSnapshot.val()
         childData.uid = childSnapshot.key

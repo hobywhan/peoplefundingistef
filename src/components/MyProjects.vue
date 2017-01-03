@@ -22,21 +22,25 @@ import firebase from 'firebase'
 import {LoadingState} from '../main.js'
 
 export default Vue.extend({
+  props: ['authenticated'],
   components: {
   },
   data () {
     return {
-      authenticated: this.$parent.authenticated,
+      // authenticated: this.$parent.authenticated,
       projectList: [],
-      user: firebase.auth().currentUser
+      user: firebase.auth().currentUser,
+      prRef: firebase.database().ref('projects')
     }
   },
   methods: {
     deleteItem(key) {
+      var _this = this
       var adaRef = firebase.database().ref('projects/' + key)
         adaRef.remove()
           .then(function() {
             console.log('Remove succeeded.')
+            _this.showList()
           })
           .catch(function(error) {
             console.log('Remove failed: ' + error.message)
@@ -44,22 +48,25 @@ export default Vue.extend({
     },
     showList() {
       if (!this.user) {
-        this.user = firebase.auth().currentUser
+        return
       }
       var _this = this
       LoadingState.$emit('toggle', true)
-      this.projectList = []
-      return firebase.database()
-        .ref('projects')
+      return this.prRef
         .orderByChild('creator')
         .startAt(this.user.uid)
         .endAt(this.user.uid)
-        .on('value', function(snapshot) {
+        .once('value', function(snapshot) {
+          _this.projectList = []
           snapshot.forEach(function(childSnapshot) {
             var childData = childSnapshot.val()
             childData.uid = childSnapshot.key
             _this.projectList.push(childData)
           })
+        }).then(function() {
+          LoadingState.$emit('toggle', false)
+        }).catch(function(error) {
+          console.log('Get failed: ' + error.message)
           LoadingState.$emit('toggle', false)
         })
     }
@@ -72,7 +79,7 @@ export default Vue.extend({
   },
   created: function () {
     this.user = firebase.auth().currentUser
-    // this.showList()
+    this.showList()
   }
 })
 
