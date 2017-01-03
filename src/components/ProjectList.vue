@@ -5,8 +5,8 @@
       <h2>Tous les projets :</h2>
       <ul class='project-list'>
         <li class="project-item" v-for="item in projectList">
-          <h4 class="project-title">{{ item.projectTitle }}</h4>
-          <div v-html="item.projectDescription"></div>
+          <h4 class="project-title">{{ item.title }}</h4>
+          <p>{{ item.description }}</p>
           <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
         </li>
       </ul>

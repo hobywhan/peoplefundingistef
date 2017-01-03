@@ -4,8 +4,8 @@
     <h2>Vos projets:</h2>
     <ul class='project-list'>
       <li class="project-item" v-for="(item, key) in projectList">
-        <h4 class="project-title">{{ item.projectTitle }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
-        <div v-html="item.projectDescription"></div>
+        <h4 class="project-title">{{ item.title }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
+        <p>{{item.description}}</p>
         <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
       </li>
     </ul>
@@ -23,7 +23,6 @@ export default Vue.extend({
   },
   data () {
     return {
-      // authenticated: this.$parent.authenticated,
       projectList: [],
       user: firebase.auth().currentUser,
       prRef: firebase.database().ref('projects')
@@ -43,9 +42,7 @@ export default Vue.extend({
           })
     },
     showList() {
-      if (!this.user) {
-        return
-      }
+      if (!this.user) return
       var _this = this
       LoadingState.$emit('toggle', true)
       return this.prRef
@@ -68,13 +65,12 @@ export default Vue.extend({
     }
   },
   watch: {
-    user: 'showList',
     authenticated: function() {
       this.user = firebase.auth().currentUser
+      this.showList()
     }
   },
   created: function () {
-    this.user = firebase.auth().currentUser
     this.showList()
   }
 })

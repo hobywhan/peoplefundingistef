@@ -37,7 +37,7 @@ export default Vue.extend({
       firebase.database().ref('categories').push(this.category)
     }
   },
-  mounted: function () {
+  created: function () {
     var _this = this
     LoadingState.$emit('toggle', true)
     firebase.database().ref('categories').on('value', function(snapshot) {

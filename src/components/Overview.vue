@@ -2,24 +2,19 @@
 <template>
   <div class="overview">
     <h2>Bienvenue sur le site de crowdfunding Peoplefunding</h2>
-    <div v-if="authenticated">
-      <p>Vous êtes connecté</p>
-      <div class="project-list">
-        <div class="">
-          <h2>Les 5 derniers projets créés:</h2>
-          <ul class='project-list'>
-            <!-- TODO : sort by time desc, change all for with (key, item) -->
-            <li class="project-item" v-for="item in projectList">
-              <h4 class="project-title">{{ item.projectTitle }}</h4>
-            </li>
-          </ul>
-        </div>
+    <div class="project-list">
+      <div class="">
+        <h2>Les 5 derniers projets créés:</h2>
+        <ul class='project-list'>
+          <!-- TODO : sort by time desc, change all for with (key, item) -->
+          <li class="project-item" v-for="item in projectList">
+            <h4 class="project-title">{{ item.projectTitle }}</h4>
+            <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
+          </li>
+        </ul>
       </div>
     </div>
-    <p v-else>
-      Connectez-vous pour commencer
-  </p>
-</div>
+  </div>
 </template>
 
 <script>
@@ -30,11 +25,10 @@ import {LoadingState} from '../main.js'
 export default Vue.extend({
   components: {
   },
-  props: ['authenticated', 'uifirebase'],
+  props: ['authenticated'],
   data () {
     return {
-      projectList: [],
-      msg: 'Hello World!'
+      projectList: []
     }
   },
   created: function () {
@@ -44,8 +38,16 @@ export default Vue.extend({
     .ref('projects')
     .orderByChild('time')
     .limitToLast(5)
-    .on('value', function(snapshot) {
-      _this.projectList = snapshot.val()
+    .once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var childData = childSnapshot.val()
+        childData.uid = childSnapshot.key
+        _this.projectList.push(childData)
+      })
+    }).then(function() {
+      LoadingState.$emit('toggle', false)
+    }).catch(function(error) {
+      console.log('Get failed: ' + error.message)
       LoadingState.$emit('toggle', false)
     })
   }

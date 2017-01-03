@@ -14,15 +14,16 @@
 
       <tinymce-editor v-model="project.content"></tinymce-editor><br />
 
-      <input type="file" @change="loadFile" /><br />
+      <input type="file" @change="loadFile" accept="image/*" /><br />
       Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
-      <span v-if="!project.image">Pas image selectionnée<br /></span>
+      <span v-if="!project.image">Pas image selectionnée</span><br />
 
       <!-- <textarea id="newProjectDescription" v-model="projectDescription" placeholder="projectDescription"></textarea> -->
       <!-- <vue-html5-editor :content="projectDescription" :height="500" @change="update"></vue-html5-editor> -->
 
-      <p v-html="project.content">
-      <button  class="btn btn-default submit-btn" v-on:click="submit()" :disabled="!canSubmit" @click.prevent="submitForm">Ajouter</button>
+      <p v-html="project.content"></p><br />
+
+      <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
     </div>
   </form>
   </div>
@@ -72,7 +73,7 @@ import tinymceeditor from './TinymceEditor.vue'
 export default Vue.extend({
   data () {
     return {
-      canSubmit: true,
+      canSubmit: false,
       project: {
         title: 'Titre du projet',
         description: 'Description du projet',
@@ -87,7 +88,7 @@ export default Vue.extend({
   },
   methods: {
     submit() {
-      console.log(this.project.title)
+      console.log(this.project)
       var _this = this
       var user = firebase.auth().currentUser
       firebase.database().ref('projects').push({

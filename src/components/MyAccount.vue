@@ -1,9 +1,13 @@
 
 <template>
   <div class="user-show">
-    <div class="">
+    <div v-if="user">
       <h2 class="user-title">{{ user.displayName }}</h2>
+      <img :src="user.avatar" width="200" v-if="user.avatar" />
       <p>{{ user.email }}</p>
+      <p>{{ user.phone }}</p>
+      <p>{{ user.address }}</p>
+      <router-link :to="{ name: 'editAccount'}">Modifier vos données</router-link>
     </div>
   </div>
 </template>
@@ -14,6 +18,7 @@ import firebase from 'firebase'
 import {LoadingState} from '../main.js'
 
 export default Vue.extend({
+  props: ['authenticated'],
   components: {
   },
   data () {
@@ -22,17 +27,30 @@ export default Vue.extend({
     }
   },
   methods: {
+    showAccount() {
+      if (!this.user) return
+      var _this = this
+      LoadingState.$emit('toggle', true)
+      return firebase.database()
+      .ref('users/' + this.user.uid)
+      .once('value', function(snapshot) {
+        _this.user = snapshot.val()
+      }).then(function() {
+        LoadingState.$emit('toggle', false)
+      }).catch(function(error) {
+        console.log('Get failed: ' + error.message)
+        LoadingState.$emit('toggle', false)
+      })
+    }
   },
-  mounted: function () {
-    let userId = this.user.uid
-    // var user = firebase.auth().currentUser
-    var _this = this
-    LoadingState.$emit('toggle', true)
-    firebase.database().ref('users/' + userId).on('value', function(snapshot) {
-      console.log(snapshot.val())
-      _this.user = snapshot.val()
-      LoadingState.$emit('toggle', false)
-    })
+  watch: {
+    authenticated: function() {
+      this.user = firebase.auth().currentUser
+      this.showAccount()
+    }
+  },
+  created: function () {
+    this.showAccount()
   }
 })
 

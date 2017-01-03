@@ -2,7 +2,7 @@
 <template>
   <div class="auth-wrapper">
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
-    <h4>Connectez-vous pour partager et gérer vos projets</h4>
+    <h4>Inscrivez/Connectez-vous pour partager et gérer vos projets</h4>
     <div id="firebaseui-auth-container"></div>
   </div>
 </template>
@@ -11,20 +11,19 @@
 import Vue from 'vue/dist/vue'
 
 import firebase from 'firebase'
-import {router, AuthenticatedState} from '../main.js'
+import {router, AuthenticatedState, uifirebase} from '../main.js'
 
 export default Vue.extend({
-  props: ['authenticated', 'uifirebase'],
+  props: ['authenticated'],
   data () {
     return {
     }
   },
-  created: function () {
+  mounted: function () {
     if (this.authenticated) {
       router.push({path: '/'})
       return
     }
-    var _this = this
     // FirebaseUI config.
     var uiConfig = {
       'callbacks': {
@@ -46,10 +45,10 @@ export default Vue.extend({
         //firebase.auth.GithubAuthProvider.PROVIDER_ID,
       ],
       // Terms of service url.
-      'tosUrl': '/#!/terms'
+      'tosUrl': '/terms'
     }
     // The start method will wait until the DOM is loaded.
-    _this.uifirebase.start('#firebaseui-auth-container', uiConfig)
+    uifirebase.start('#firebaseui-auth-container', uiConfig)
   }
 })
 

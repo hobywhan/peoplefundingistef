@@ -6,8 +6,8 @@ import Mainmenu from './components/Mainmenu.vue'
 // import VueFroala from 'vue-froala/vue-froala.es5'
 // import VueTinymce from 'vue-tinymce/src/vue-tinymce'
 // import VueHtml5Editor from 'vue-html5-editor'
-import firebase from 'firebase'
-import firebaseui from 'firebaseui'
+// import firebase from 'firebase'
+// import firebaseui from 'firebaseui'
 import Loader from './components/Loader.vue'
 
 Vue.use(VueRouter)
@@ -28,6 +28,11 @@ export const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'active'
 })
+// fireInit()
+// var uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
+// export const uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
+LoadingState.$emit('toggle', true)
+export const uifirebase = fireInit()
 
 export const App = new Vue({
   router,
@@ -38,20 +43,20 @@ export const App = new Vue({
   data(){
     return {
       isLoading: true,
-      authenticated: false,
-      uifirebase: null
+      authenticated: false
+      // uifirebase: uifirebase
     }
   },
   template:
   '<div class="container">' +
-    '<main-menu :authenticated="authenticated" :uifirebase="uifirebase"></main-menu>' +
+    '<main-menu :authenticated="authenticated"></main-menu>' +
     '<loader v-show="isLoading"></loader>' +
-    '<router-view :authenticated="authenticated" :uifirebase="uifirebase"></router-view>' +
+    '<router-view :authenticated="authenticated"></router-view>' +
   '</div>',
   beforeMount: function() {
-  	LoadingState.$emit('toggle', true)
-    fireInit()
-    this.uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
+  	// LoadingState.$emit('toggle', true)
+    // fireInit()
+    // this.uifirebase = firebaseui.auth.AuthUI(firebase.auth())
   },
   created(){
     LoadingState.$on('toggle', (isLoading) => {

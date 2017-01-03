@@ -2,8 +2,10 @@
 <template>
   <div class="project-show">
     <div class="">
-      <h2 class="project-title">{{ project.projectTitle }}</h2>
-      <div v-html="project.projectDescription"></div>
+      <h2 class="project-title">{{ project.title }}</h2>
+      <img :src="project.image" width="200" v-if="project.image" />
+      <p>{{project.description}}</p>
+      <div v-html="project.content"></div>
     </div>
   </div>
 </template>
@@ -20,12 +22,12 @@ export default Vue.extend({
     return {
       project: [],
       user: firebase.auth().currentUser,
-      projectId: $route.params.projectId
+      projectId: this.$route.params.projectId
     }
   },
   methods: {
   },
-  mounted: function () {
+  created: function () {
     var _this = this
     LoadingState.$emit('toggle', true)
     firebase.database().ref('projects/' + this.projectId).on('value', function(snapshot) {
