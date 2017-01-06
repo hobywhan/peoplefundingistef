@@ -7,21 +7,13 @@
       <input class="form-control" type="text" v-model="project.title" placeholder="project.title"><br />
 
       <textarea v-model="project.description" placeholder="project.description"></textarea><br />
-
-      <div id="xxx">
-        <tinymce content='project.content' :options="options" @change="update"></tinymce>
-      </div>
-
-      <tinymce-editor v-model="project.content"></tinymce-editor><br />
+      <textarea v-model="project.content" placeholder="project.content"></textarea><br />
+      <p v-html="project.content">
 
       <input type="file" @change="loadFile" /><br />
       Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
       <span v-if="!project.image">Pas image selectionnée<br /></span>
 
-      <!-- <textarea id="newProjectDescription" v-model="projectDescription" placeholder="projectDescription"></textarea> -->
-      <!-- <vue-html5-editor :content="projectDescription" :height="500" @change="update"></vue-html5-editor> -->
-
-      <p v-html="project.content">
       <button  class="btn btn-default submit-btn" v-on:click="submit()" :disabled="!canSubmit" @click.prevent="submitForm">Ajouter</button>
     </div>
   </form>
@@ -32,38 +24,25 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 // import tinymce from 'vue-tinymce/src/vue-tinymce'
-import {router} from '../main.js'
-import tinymceeditor from './TinymceEditor.vue'
+import {router, LoadingState} from '../main.js'
+// import tinymceeditor from './TinymceEditor.vue'
 
 export default Vue.extend({
   data () {
     return {
       canSubmit: true,
-      projectId: $route.params.projectId,
-      project: {
-        title: 'Titre du projet',
-        description: 'Description du projet',
-        content: 'Contenu du projet',
-        image: ''
-      }
+      projectId: this.$route.params.projectId,
+      project: {},
+      categoryList: []
     }
   },
   components: {
     // 'tinymce': tinymce,
-    'tinymce-editor': tinymceeditor
+    // 'tinymce-editor': tinymceeditor
   },
   methods: {
     submit() {
-      console.log(this.project.title)
-      var _this = this
-      var user = firebase.auth().currentUser
-      firebase.database().ref('projects').push({
-        title: _this.project.title,
-        description: _this.project.description,
-        image: _this.project.image,
-        time: Date.now(),
-        creator: user.uid
-      })
+      firebase.database().ref('projects/' + this.projectId).set(this.project)
       router.push({path: '/projectlist'})
     },
     update: function(e) {
@@ -86,9 +65,18 @@ export default Vue.extend({
       reader.readAsDataURL(file) // File as Base64
       // reader.readAsBinaryString(file) // File as raw binary data
       // reader..readAsText(file) // File as raw string
+    },
+    showProject() {
+      var _this = this
+      LoadingState.$emit('toggle', true)
+      firebase.database().ref('projects/' + this.projectId).on('value', function(snapshot) {
+        _this.project = snapshot.val()
+        LoadingState.$emit('toggle', false)
+      })
     }
-   },
-  mounted: function () {
+  },
+  created: function () {
+    this.showProject()
   }
 })
 

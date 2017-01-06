@@ -1,16 +1,18 @@
 <template>
-  <div class="category-list">
-    {{msg}}
-    <form>
-      <input class="form-control" type="text" v-model="category.name" placeholder="category.name">
+  <div class="categories">
+    <div class="category-add">
+      <h3>{{msg}}</h3>
+      <input class="form-control" type="text" v-model="category" placeholder="category">
       <button class="btn btn-default submit-btn" v-on:click="submit()">Ajouter</button>
-    </form>
-    {{msg2}}
-    <ul class='category-list'>
-      <li class="category-item" v-for="item in categoryList">
-        {{ item.name }}
-      </li>
-    </ul>
+    </div>
+    <div class="category-list">
+      <h3>{{msg2}}</h3>
+      <ul>
+        <li class="category-item" v-for="item in categoryList">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -18,6 +20,7 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
+import VueNotifications from 'vue-notifications'
 
 export default Vue.extend({
   components: {
@@ -27,28 +30,34 @@ export default Vue.extend({
       msg: 'Ajouter une catégorie : ',
       msg2: 'Catégories : ',
       categoryList: [],
-      category: {
-        name: ''
-      }
+      category: 'pizza'
     }
   },
   methods: {
     submit() {
+      for (var i = 0; i < this.categoryList.length; i++) {
+        if (this.categoryList[i] === this.category) {
+          return
+        }
+      }
       firebase.database().ref('categories').push(this.category)
+      VueNotifications.success({message: 'Catégorie ajouté'})
+    },
+    showList() {
+      var _this = this
+      LoadingState.$emit('toggle', true)
+      firebase.database().ref('categories').on('value', function(snapshot) {
+        _this.categoryList = []
+        snapshot.forEach(function(childSnapshot) {
+          var childData = childSnapshot.val()
+          _this.categoryList.push(childData)
+        })
+        LoadingState.$emit('toggle', false)
+      })
     }
   },
   created: function () {
-    var _this = this
-    LoadingState.$emit('toggle', true)
-    firebase.database().ref('categories').on('value', function(snapshot) {
-      _this.categoryList = []
-      snapshot.forEach(function(childSnapshot) {
-        var childData = childSnapshot.val()
-        childData.uid = childSnapshot.key
-        _this.categoryList.push(childData)
-      })
-      LoadingState.$emit('toggle', false)
-    })
+    this.showList()
   }
 })
 </script>

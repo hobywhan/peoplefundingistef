@@ -9,6 +9,19 @@ import Mainmenu from './components/Mainmenu.vue'
 // import firebase from 'firebase'
 // import firebaseui from 'firebaseui'
 import Loader from './components/Loader.vue'
+import VueNotifications from 'vue-notifications'
+import miniToastr from 'mini-toastr'
+
+function toast ({title, message, type, timeout, cb}) {
+  return miniToastr[type](message, title, timeout, cb)
+}
+const options = {
+  success: toast,
+  error: toast,
+  info: toast,
+  warn: toast
+}
+Vue.use(VueNotifications, options)
 
 Vue.use(VueRouter)
 // Vue.use(VueFroala)
@@ -28,10 +41,7 @@ export const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'active'
 })
-// fireInit()
-// var uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
-// export const uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
-LoadingState.$emit('toggle', true)
+
 export const uifirebase = fireInit()
 
 export const App = new Vue({
@@ -44,20 +54,14 @@ export const App = new Vue({
     return {
       isLoading: true,
       authenticated: false
-      // uifirebase: uifirebase
     }
   },
   template:
   '<div class="container">' +
     '<main-menu :authenticated="authenticated"></main-menu>' +
     '<loader v-show="isLoading"></loader>' +
-    '<router-view :authenticated="authenticated"></router-view>' +
+    '<router-view :authenticated="authenticated" :isLoading="isLoading"></router-view>' +
   '</div>',
-  beforeMount: function() {
-  	// LoadingState.$emit('toggle', true)
-    // fireInit()
-    // this.uifirebase = firebaseui.auth.AuthUI(firebase.auth())
-  },
   created(){
     LoadingState.$on('toggle', (isLoading) => {
       this.isLoading = isLoading
@@ -65,6 +69,10 @@ export const App = new Vue({
     AuthenticatedState.$on('toggle', (authenticated) => {
       this.authenticated = authenticated
     })
+  },
+  mounted: function() {
+    miniToastr.init()
+  	// LoadingState.$emit('toggle', true)
   }
 }).$mount('#app')
 

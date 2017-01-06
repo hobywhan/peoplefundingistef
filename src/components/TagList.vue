@@ -1,16 +1,18 @@
 <template>
-  <div class="tag-list">
-    {{msg}}
-    <form>
-      <input class="form-control" type="text" v-model="tag.name" placeholder="tag.name">
+  <div class="tags">
+    <div class="tag-add">
+      <h3>{{msg}}</h3>
+      <input class="form-control" type="text" v-model="tag" placeholder="tag">
       <button class="btn btn-default submit-btn" v-on:click="submit()">Ajouter</button>
-    </form>
-    {{msg2}}
-    <ul class='tag-list'>
-      <li class="tag-item" v-for="item in tagList">
-        {{ item.name }}
-      </li>
-    </ul>
+    </div>
+    <div class="tag-list">
+      <h3>{{msg2}}</h3>
+      <ul>
+        <li class="tag-item" v-for="item in tagList">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -18,36 +20,44 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
+import VueNotifications from 'vue-notifications'
 
 export default Vue.extend({
   components: {
   },
   data () {
     return {
-      msg: 'Tags : ',
+      msg: 'Ajouter un tag : ',
+      msg2: 'Tags : ',
       tagList: [],
-      tag: {
-        name: ''
-      }
+      tag: 'bière'
     }
   },
   methods: {
     submit() {
-      firebase.database().ref('categories').push(this.category)
+      for (var i = 0; i < this.tagList.length; i++) {
+        if (this.tagList[i] === this.tag) {
+          return
+        }
+      }
+      firebase.database().ref('tags').push(this.tag)
+      VueNotifications.success({message: 'Tag ajouté'})
+    },
+    showList() {
+      var _this = this
+      LoadingState.$emit('toggle', true)
+      firebase.database().ref('tags').on('value', function(snapshot) {
+        _this.tagList = []
+        snapshot.forEach(function(childSnapshot) {
+          var childData = childSnapshot.val()
+          _this.tagList.push(childData)
+        })
+        LoadingState.$emit('toggle', false)
+      })
     }
   },
-  mounted: function () {
-    var _this = this
-    LoadingState.$emit('toggle', true)
-    firebase.database().ref('tags').on('value', function(snapshot) {
-      _this.tagList = []
-      snapshot.forEach(function(childSnapshot) {
-        var childData = childSnapshot.val()
-        childData.uid = childSnapshot.key
-        _this.tagList.push(childData)
-      })
-      LoadingState.$emit('toggle', false)
-    })
+  created: function () {
+    this.showList()
   }
 })
 </script>

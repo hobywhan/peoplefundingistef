@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import firebaseui from 'firebaseui'
-import {LoadingState, AuthenticatedState} from '../main.js'
+import {AuthenticatedState} from '../main.js'
 
 export function fireInit() {
 	var config = {
@@ -13,7 +13,6 @@ export function fireInit() {
 	firebase.initializeApp(config)
 
 	firebase.auth().onAuthStateChanged(function (user) {
-		LoadingState.$emit('toggle', true)
 	  if (user) {
 			let newUser = {
 				// displayName: user.displayName ? user.displayName : '',
@@ -35,10 +34,8 @@ export function fireInit() {
 	  } else {
 			AuthenticatedState.$emit('toggle', false)
 	  }
-		LoadingState.$emit('toggle', false)
 	}, function(error) {
 	  console.log(error)
-		LoadingState.$emit('toggle', false)
 	})
 
 	return new firebaseui.auth.AuthUI(firebase.auth())

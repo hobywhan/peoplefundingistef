@@ -9,7 +9,6 @@ import EditAccount from './components/EditAccount.vue'
 import Auth from './components/Auth.vue'
 import TermsOfService from './components/TermsOfService.vue'
 import CategoryList from './components/CategoryList.vue'
-import TagList from './components/TagList.vue'
 import Payment from './components/Payment.vue'
 
 const routes = [
@@ -81,14 +80,6 @@ const routes = [
      path: '/categorylist',
      component: CategoryList,
      name: 'listCategory',
-     meta: {
-       auth: true
-     }
- },
- {
-     path: '/taglist',
-     component: TagList,
-     name: 'listTag',
      meta: {
        auth: true
      }

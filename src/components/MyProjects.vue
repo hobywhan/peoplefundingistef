@@ -4,9 +4,11 @@
     <h2>Vos projets:</h2>
     <ul class='project-list'>
       <li class="project-item" v-for="(item, key) in projectList">
-        <h4 class="project-title">{{ item.title }}</h4><button  class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
+        <h4 class="project-title">{{ item.title }}</h4><button class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
         <p>{{item.description}}</p>
         <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
+        <router-link :to="{ name: 'editProject', params: { projectId: item.uid }}">Editer</router-link>
+        <a v-on:click="deleteItem(item.uid)">Supprimer</a>
       </li>
     </ul>
   </div>
@@ -30,12 +32,12 @@ export default Vue.extend({
   },
   methods: {
     deleteItem(key) {
-      var _this = this
+      // var _this = this
       var adaRef = firebase.database().ref('projects/' + key)
         adaRef.remove()
           .then(function() {
             console.log('Remove succeeded.')
-            _this.showList()
+            // _this.showList()
           })
           .catch(function(error) {
             console.log('Remove failed: ' + error.message)
@@ -49,17 +51,13 @@ export default Vue.extend({
         .orderByChild('creator')
         .startAt(this.user.uid)
         .endAt(this.user.uid)
-        .once('value', function(snapshot) {
+        .on('value', function(snapshot) {
           _this.projectList = []
           snapshot.forEach(function(childSnapshot) {
             var childData = childSnapshot.val()
             childData.uid = childSnapshot.key
             _this.projectList.push(childData)
           })
-        }).then(function() {
-          LoadingState.$emit('toggle', false)
-        }).catch(function(error) {
-          console.log('Get failed: ' + error.message)
           LoadingState.$emit('toggle', false)
         })
     }

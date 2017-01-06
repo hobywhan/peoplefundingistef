@@ -4,24 +4,29 @@
     <div class="">
       <form>
     <h2>Ajouter un projet:</h2>
-      <input class="form-control" type="text" v-model="project.title" placeholder="project.title"><br />
+      <input class="form-control" type="text" v-model="project.title" placeholder="project.title">
 
-      <textarea v-model="project.description" placeholder="project.description"></textarea><br />
+      <textarea class="form-control" v-model="project.description" placeholder="project.description"></textarea>
 
-      <div id="xxx">
+      <textarea class="form-control" v-model="project.content" placeholder="project.content"></textarea>
+      <p v-html="project.content"></p>
+
+      <!-- <div id="xxx">
         <tinymce content='project.content' :options="options" @change="update"></tinymce>
-      </div>
+      </div> -->
 
-      <tinymce-editor v-model="project.content"></tinymce-editor><br />
+      <!-- <tinymce-editor v-model="project.content"></tinymce-editor> -->
 
-      <input type="file" @change="loadFile" accept="image/*" /><br />
+      <input type="file" @change="loadFile" accept="image/*" />
       Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
-      <span v-if="!project.image">Pas image selectionnée</span><br />
+      <span v-if="!project.image">Pas image selectionnée</span>
 
-      <!-- <textarea id="newProjectDescription" v-model="projectDescription" placeholder="projectDescription"></textarea> -->
-      <!-- <vue-html5-editor :content="projectDescription" :height="500" @change="update"></vue-html5-editor> -->
 
-      <p v-html="project.content"></p><br />
+      <input class="form-control" type="text" v-model="project.tags" placeholder="project.tags">
+      <select v-model="project.categories" multiple>
+        <option v-for="category in categoryList" v-if="category.key" v-bind:value="category.key">{{category.key}}-{{category.name}}</option>
+      </select>
+      {{project.categories | json}}
 
       <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
     </div>
@@ -33,43 +38,9 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 // import tinymce from 'vue-tinymce/src/vue-tinymce'
-import {router} from '../main.js'
-import tinymceeditor from './TinymceEditor.vue'
+import {router, LoadingState} from '../main.js'
+// import tinymceeditor from './TinymceEditor.vue'
 
-// var tinymceeditor = Vue.component('tinymce-editor', {
-//   template: '<textarea :id="id" v-model="editorContent"></textarea>',
-//   props: [
-//     'value'
-//   ],
-//   data () {
-//     return {
-//       id: ''
-//     }
-//   },
-//   computed: {
-//     editorContent: {
-//       get () {
-//         return this.value
-//       },
-//       set (newVal) {
-//         this.$emit('input', newVal)
-//       }
-//     }
-//   },
-//   created () {
-//     const d = new Date()
-//     this.id = 'id_' + d.getTime()
-//     tinymce.init({
-//       selector: '#' + this.id,
-//       setup: (editor) => {
-//         // 'change' can be used instead of 'keyup' to only update once you click outside the editor
-//         editor.on('keyup', () => {
-//           this.$emit('input', editor.getContent())
-//         })
-//       }
-//     })
-//   }
-// })
 export default Vue.extend({
   data () {
     return {
@@ -78,26 +49,25 @@ export default Vue.extend({
         title: 'Titre du projet',
         description: 'Description du projet',
         content: 'Contenu du projet',
-        image: ''
-      }
+        image: '',
+        tags: 'Ajouter des tags, séparé de ";"',
+        cartegories: []
+      },
+      categoryList: []
     }
   },
   components: {
     // 'tinymce': tinymce,
-    'tinymce-editor': tinymceeditor
+    // 'tinymce-editor': tinymceeditor
   },
   methods: {
     submit() {
       console.log(this.project)
-      var _this = this
       var user = firebase.auth().currentUser
-      firebase.database().ref('projects').push({
-        title: _this.project.title,
-        description: _this.project.description,
-        image: _this.project.image,
-        time: Date.now(),
-        creator: user.uid
-      })
+      this.project.creator = user.uid
+      this.project.time = Date.now()
+      firebase.database().ref('projects').push(this.project)
+      VueNotifications.success({message: 'Projet ajouté'})
       router.push({path: '/projectlist'})
     },
     update: function(e) {
@@ -121,7 +91,26 @@ export default Vue.extend({
       // reader.readAsBinaryString(file) // File as raw binary data
       // reader..readAsText(file) // File as raw string
     }
-   },
+  },
+  created: function () {
+    var _this = this
+    LoadingState.$emit('toggle', true)
+    firebase.database().ref('categories').once('value', function(snapshot) {
+      _this.categoryList = []
+      snapshot.forEach(function(childSnapshot) {
+        _this.categoryList.push({
+          key: childSnapshot.key,
+          name: childSnapshot.val()
+        })
+      })
+      LoadingState.$emit('toggle', false)
+      console.log(_this.categoryList)
+    }).then(() => {
+      LoadingState.$emit('toggle', false)
+    }).catch(() => {
+      LoadingState.$emit('toggle', false)
+    })
+  },
   mounted: function () {
   }
 })

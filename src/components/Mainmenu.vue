@@ -45,6 +45,12 @@ export default Vue.extend({
         'auth': false
       },
       {
+        'title': 'Catégories',
+        'id': '/categoryList',
+        'name': 'listCategory',
+        'auth': false
+      },
+      {
         'title': 'Mon compte',
         'id': '/myaccount',
         'name': 'account',
