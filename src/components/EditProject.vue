@@ -1,31 +1,39 @@
 
 <template>
   <div class="enter-project">
-    <div class="">
-      <form>
-    <h2>Ajouter un projet:</h2>
-      <input class="form-control" type="text" v-model="project.title" placeholder="project.title"><br />
+    <form>
+      <h2>Editer un projet:</h2>
+      <label>Titre : </label> <span>{{project.title}}</span>
 
-      <textarea v-model="project.description" placeholder="project.description"></textarea><br />
-      <textarea v-model="project.content" placeholder="project.content"></textarea><br />
-      <p v-html="project.content">
+      <label>Description : </label>
+      <textarea class="form-control" v-model="project.description" placeholder="Description du projet"></textarea>
 
-      <input type="file" @change="loadFile" /><br />
+      <label>Contenu : </label>
+      <tinymce-editor v-model="project.content"></tinymce-editor>
+
+      <label>Image : </label>
+      <input type="file" @change="loadFile" accept="image/*" />
       Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
-      <span v-if="!project.image">Pas image selectionnée<br /></span>
+      <span v-if="!project.image">Pas image selectionnée</span><br />
 
-      <button  class="btn btn-default submit-btn" v-on:click="submit()" :disabled="!canSubmit" @click.prevent="submitForm">Ajouter</button>
-    </div>
-  </form>
+      <label>Tags : </label>
+      <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparé de ';'">
+
+      <label>Categories : </label>
+      <select v-model="project.categories" v-if="categoryList.length > 0" multiple>
+        <option v-for="category in categoryList" v-bind:value="category">{{category.name}}</option>
+      </select>
+      <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
+    </form>
   </div>
 </template>
 
 <script>
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
-// import tinymce from 'vue-tinymce/src/vue-tinymce'
 import {router, LoadingState} from '../main.js'
-// import tinymceeditor from './TinymceEditor.vue'
+import tinymceeditor from './TinymceEditor.vue'
+import VueNotifications from 'vue-notifications'
 
 export default Vue.extend({
   data () {
@@ -37,17 +45,13 @@ export default Vue.extend({
     }
   },
   components: {
-    // 'tinymce': tinymce,
-    // 'tinymce-editor': tinymceeditor
+    'tinymce-editor': tinymceeditor
   },
   methods: {
     submit() {
       firebase.database().ref('projects/' + this.projectId).set(this.project)
+      VueNotifications.success({message: 'Projet modifié'})
       router.push({path: '/projectlist'})
-    },
-    update: function(e) {
-      console.log(e)
-      this.project.description = e.target.value
     },
     loadFile (e) {
       this.canSubmit = false // FileReader is async, prevent form submit untill image is loaded
@@ -69,8 +73,20 @@ export default Vue.extend({
     showProject() {
       var _this = this
       LoadingState.$emit('toggle', true)
-      firebase.database().ref('projects/' + this.projectId).on('value', function(snapshot) {
+      firebase.database().ref('projects/' + this.projectId).once('value', function(snapshot) {
         _this.project = snapshot.val()
+      }).then(() => {
+        firebase.database().ref('categories').once('value', (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            this.categoryList.push({
+              key: childSnapshot.key,
+              name: childSnapshot.val()
+            })
+          })
+          LoadingState.$emit('toggle', false)
+        })
+      })
+      .catch(() => {
         LoadingState.$emit('toggle', false)
       })
     }

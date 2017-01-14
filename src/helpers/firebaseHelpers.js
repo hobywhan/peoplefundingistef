@@ -25,7 +25,7 @@ export function fireInit() {
 			}
 			firebase.database().ref('users').once('value', function(snapshot) {
 			  if (snapshot.hasChild(user.uid)) {
-					firebase.database().ref('users/' + user.uid).set(newUser)
+					firebase.database().ref('users/' + user.uid).update(newUser)
 			  } else {
 					firebase.database().ref('users/' + user.uid).push(user)
 				}

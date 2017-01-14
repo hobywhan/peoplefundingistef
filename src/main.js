@@ -11,6 +11,7 @@ import Mainmenu from './components/Mainmenu.vue'
 import Loader from './components/Loader.vue'
 import VueNotifications from 'vue-notifications'
 import miniToastr from 'mini-toastr'
+// import tinymce from 'tinymce/tinymce.min'
 
 function toast ({title, message, type, timeout, cb}) {
   return miniToastr[type](message, title, timeout, cb)
@@ -22,7 +23,7 @@ const options = {
   warn: toast
 }
 Vue.use(VueNotifications, options)
-
+// Vue.use(tinymce)
 Vue.use(VueRouter)
 // Vue.use(VueFroala)
 // Vue.use(VueTinymce)

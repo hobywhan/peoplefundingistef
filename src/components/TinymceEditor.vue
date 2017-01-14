@@ -1,12 +1,12 @@
 <template>
-  <textarea :id="id" v-model="editorContent"></textarea>
+  <div class="tinymceeditor">
+    <textarea :id="id" v-model="editorContent" placeholder="Contenu"></textarea>
+    <p class="content-view" v-html="editorContent"></p>
+  </div>
 </template>
 
 <script>
-import tinymce from 'tinymce/tinymce.min'
-
 export default {
-  template: '<textarea :id="id" v-model="editorContent"></textarea>',
   props: [
     'value'
   ],
@@ -41,5 +41,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.fr-counter {
+  display: none;
+}
+.content-view {
+  padding: 15px;
+  background-color: #eee;
+  border: 1px solid #cacaca;
+}
 </style>

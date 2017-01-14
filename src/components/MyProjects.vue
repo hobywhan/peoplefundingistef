@@ -4,8 +4,7 @@
     <h2>Vos projets:</h2>
     <ul class='project-list'>
       <li class="project-item" v-for="(item, key) in projectList">
-        <h4 class="project-title">{{ item.title }}</h4><button class="close-btn btn btn-default btn-xs" v-on:click="deleteItem(item.uid)">X</button>
-        <p>{{item.description}}</p>
+        <projectli :project="item"></projectli>
         <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
         <router-link :to="{ name: 'editProject', params: { projectId: item.uid }}">Editer</router-link>
         <a v-on:click="deleteItem(item.uid)">Supprimer</a>
@@ -18,10 +17,12 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
+import projectli from './OneProject.vue'
 
 export default Vue.extend({
   props: ['authenticated'],
   components: {
+    projectli
   },
   data () {
     return {

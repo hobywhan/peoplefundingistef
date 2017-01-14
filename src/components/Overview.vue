@@ -8,7 +8,7 @@
         <ul class='project-list'>
           <!-- TODO : sort by time desc, change all for with (key, item) -->
           <li class="project-item" v-for="item in projectList">
-            <h4 class="project-title">{{ item.projectTitle }}</h4>
+            <h4 class="project-title">{{ item.title }}</h4>
             <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
           </li>
         </ul>
@@ -57,4 +57,14 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.project-list{
+  list-style: none;
+  padding-left: 0;
+}
+.project-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #999;
+}
 </style>
