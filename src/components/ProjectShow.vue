@@ -1,11 +1,13 @@
 
 <template>
-  <div class="project-show">
-    <div class="">
-      <h2 class="project-title">{{ project.title }}</h2>
-      <img :src="project.image" width="200" v-if="project.image" />
-      <p>{{project.description}}</p>
-      <div v-html="project.content"></div>
+  <div class="container bg-white">
+    <div class="project-show">
+      <div class="">
+        <h2 class="project-title">{{ project.title }}</h2>
+        <img :src="project.image" width="200" v-if="project.image" />
+        <p>{{project.description}}</p>
+        <div v-html="project.content"></div>
+      </div>
     </div>
   </div>
 </template>

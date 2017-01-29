@@ -1,32 +1,34 @@
 
 <template>
-  <div class="enter-project">
-      <form>
-        <h2>Ajouter un projet:</h2>
-        <label>Titre : </label>
-        <input class="form-control" type="text" v-model="project.title" placeholder="Titre du projet">
+  <div class="container bg-white">
+    <div class="enter-project">
+        <form>
+          <h2>Ajouter un projet:</h2>
+          <label>Titre : </label>
+          <input class="form-control" type="text" v-model="project.title" placeholder="Titre du projet">
 
-        <label>Description : </label>
-        <textarea class="form-control" v-model="project.description" placeholder="Description du projet"></textarea>
+          <label>Description : </label>
+          <textarea class="form-control" v-model="project.description" placeholder="Description du projet"></textarea>
 
-        <label>Contenu : </label>
-        <tinymce-editor v-model="project.content"></tinymce-editor>
+          <label>Contenu : </label>
+          <tinymce-editor v-model="project.content"></tinymce-editor>
 
-        <label>Image : </label>
-        <input type="file" @change="loadFile" accept="image/*" />
-        Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
-        <span v-if="!project.image">Pas image selectionnée</span><br />
+          <label>Image : </label>
+          <input type="file" @change="loadFile" accept="image/*" />
+          Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
+          <span v-if="!project.image">Pas image selectionnée</span><br />
 
-        <label>Tags : </label>
-        <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparé de ';'">
+          <label>Tags : </label>
+          <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparé de ';'">
 
-        <label>Categories : </label>
-        <select v-model="project.categories" v-if="categoryList.length > 0" multiple>
-          <option v-for="category in categoryList" v-bind:value="category">{{category.name}}</option>
-        </select>
+          <label>Categories : </label>
+          <select v-model="project.categories" v-if="categoryList.length > 0" multiple>
+            <option v-for="category in categoryList" v-bind:value="category">{{category.name}}</option>
+          </select>
 
-        <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
-    </form>
+          <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
+      </form>
+    </div>
   </div>
 </template>
 

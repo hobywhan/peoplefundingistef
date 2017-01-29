@@ -1,13 +1,15 @@
 
 <template>
-  <div class="user-show">
-    <div v-if="user">
-      <h2 class="user-title">{{ user.displayName }}</h2>
-      <img :src="user.avatar" width="200" v-if="user.avatar" />
-      <p>{{ user.email }}</p>
-      <p>{{ user.phone }}</p>
-      <p>{{ user.address }}</p>
-      <router-link :to="{ name: 'editAccount'}">Modifier vos données</router-link>
+  <div class="container bg-white">
+    <div class="user-show">
+      <div v-if="user">
+        <h2 class="user-title">{{ user.displayName }}</h2>
+        <img :src="user.avatar" width="200" v-if="user.avatar" />
+        <p>{{ user.email }}</p>
+        <p>{{ user.phone }}</p>
+        <p>{{ user.address }}</p>
+        <router-link :to="{ name: 'editAccount'}">Modifier vos données</router-link>
+      </div>
     </div>
   </div>
 </template>

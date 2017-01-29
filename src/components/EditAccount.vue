@@ -1,20 +1,22 @@
 
 <template>
-  <div class="enter-account">
-    <div v-if="user">
-      <form>
-        <h2>Modifiez votre compte:</h2>
-        <p>{{ user.email}}</p><br />
-        <input class="form-control" type="text" v-model="account.displayName" placeholder="account.displayName"><br />
-        <input class="form-control" type="text" v-model="account.phone" placeholder="account.phone"><br />
-        <textarea v-model="account.address" placeholder="account.address"></textarea><br />
+  <div class="container bg-white">
+    <div class="enter-account">
+      <div v-if="user">
+        <form>
+          <h2>Modifiez votre compte:</h2>
+          <p>{{ user.email}}</p><br />
+          <input class="form-control" type="text" v-model="account.displayName" placeholder="account.displayName"><br />
+          <input class="form-control" type="text" v-model="account.phone" placeholder="account.phone"><br />
+          <textarea v-model="account.address" placeholder="account.address"></textarea><br />
 
-        <input type="file" @change="loadFile" /><br />
-        Image chargée (taille limitée): <img :src="account.avatar" width="200" v-if="account.avatar" />
-        <span v-if="!account.avatar">Pas image selectionnée<br /></span>
-        <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
-      </div>
-    </form>
+          <input type="file" @change="loadFile" /><br />
+          Image chargée (taille limitée): <img :src="account.avatar" width="200" v-if="account.avatar" />
+          <span v-if="!account.avatar">Pas image selectionnée<br /></span>
+          <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

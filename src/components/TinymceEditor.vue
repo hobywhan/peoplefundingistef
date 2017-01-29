@@ -6,10 +6,19 @@
 </template>
 
 <script>
+// import theme from 'tinymce/themes/modern/theme.js'
+// import tinymce from 'tinymce/tinymce.min.js'
+// import tinymce from 'https:////cdn.tinymce.com/4/tinymce.min.js'
+// import tinymce from '../helpers/tinymce.min.js'
+
 export default {
   props: [
     'value'
   ],
+  components: {
+    // theme,
+    // tinymce
+  },
   data () {
     return {
       id: ''
@@ -42,9 +51,6 @@ export default {
 </script>
 
 <style scoped>
-.fr-counter {
-  display: none;
-}
 .content-view {
   padding: 15px;
   background-color: #eee;

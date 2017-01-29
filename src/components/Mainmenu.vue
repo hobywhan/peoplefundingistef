@@ -1,13 +1,48 @@
 
 <template>
-  <div class="main-menu">
-     <ul class="nav nav-pills">
-      <router-link role="presentation" tag="li" v-for="item in arrNav" v-if="item.auth || authenticated" :to="{ name: item.name }" exact>
-        <a>{{ item.title }}</a>
-      </router-link>
-     </ul>
-      <button  v-if="authenticated" class="btn btn-default log-btn" v-on:click="logout()">Déconnexion</button>
-      <button  v-else class="btn btn-default log-btn" v-on:click="login()">Connexion</button>
+  <div class="main-menu bg-white">
+    <div class="container">
+      <div class="right-menu">
+
+        <!-- <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/"><img src="../assets/logo.png" width="250"/></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <router-link role="presentation" tag="li" v-for="item in arrNav" v-if="item.auth != authenticated" :to="{ name: item.name }" exact>
+                  <a class="title2">{{ item.title }}</a>
+                </router-link>
+                <li>
+                  <a v-if="authenticated" class="title2" v-on:click="logout()">Déconnexion</a>
+                  <a v-else class="title2" v-on:click="login()">Connexion</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav> -->
+
+        <router-link class="logo" to="/">
+          <img src="../assets/logo.png" width="250"/>
+        </router-link>
+        <ul class="nav nav-pills row">
+          <router-link role="presentation" tag="li" v-for="item in arrNav" v-if="item.auth != authenticated" :to="{ name: item.name }" exact>
+            <a class="title2">{{ item.title }}</a>
+          </router-link>
+          <li>
+            <a v-if="authenticated" class="title2" v-on:click="logout()">Déconnexion</a>
+            <a v-else class="title2" v-on:click="login()">Connexion</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,17 +55,18 @@ export default Vue.extend({
   props: ['authenticated'],
   data () {
     return {
-      arrNav: [{
-        'title': 'Accueil',
-        'id': '/',
-        'name': 'home',
-        'auth': true
-      },
+      arrNav: [
       {
-        'title': 'Liste des projets',
+        'title': 'Explorer',
         'id': '/projectlist',
         'name': 'listProject',
         'auth': true
+      },
+      {
+        'title': 'Explorer',
+        'id': '/projectlist',
+        'name': 'listProject',
+        'auth': false
       },
       {
         'title': 'Mes projets',
@@ -39,15 +75,15 @@ export default Vue.extend({
         'auth': false
       },
       {
-        'title': 'Ajouter un projet',
-        'id': '/enterproject',
-        'name': 'newProject',
-        'auth': false
+        'title': 'Proposer',
+        'id': '/login',
+        'name': 'login',
+        'auth': true
       },
       {
-        'title': 'Catégories',
-        'id': '/categoryList',
-        'name': 'listCategory',
+        'title': 'Proposer',
+        'id': '/enterproject',
+        'name': 'newProject',
         'auth': false
       },
       {
@@ -80,19 +116,32 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .main-menu li, .main-menu router-link{
-    display: inline-block;
+  .main-menu {
+    height: 200px;
   }
-  .nav-pills{
-    display: inline-block;
+  li .title2 {
+    font-size: 18px;
   }
-  .main-menu{
-    margin-top: 20px;
+  .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    color: #000;
+    background-color: transparent;
+    border-bottom: 5px solid #FDB719;
   }
-  .log-btn{
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 40px;
+  .nav-pills > li > a {
+    border-radius: 0px;
   }
-
+  .right-menu {
+    position: relative;
+    min-height: 200px;
+  }
+  .nav.nav-pills {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+  .logo {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+  }
 </style>

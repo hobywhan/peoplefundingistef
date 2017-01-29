@@ -1,15 +1,17 @@
 
 <template>
-  <div class="project-list">
-    <h2>Vos projets:</h2>
-    <ul class='project-list'>
-      <li class="project-item" v-for="(item, key) in projectList">
-        <projectli :project="item"></projectli>
-        <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
-        <router-link :to="{ name: 'editProject', params: { projectId: item.uid }}">Editer</router-link>
-        <a v-on:click="deleteItem(item.uid)">Supprimer</a>
-      </li>
-    </ul>
+  <div class="container bg-white">
+    <div class="project-list">
+      <h2>Vos projets:</h2>
+      <ul class='project-list'>
+        <li class="project-item" v-for="(item, key) in projectList">
+          <projectli :project="item"></projectli>
+          <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
+          <router-link :to="{ name: 'editProject', params: { projectId: item.uid }}">Editer</router-link>
+          <a v-on:click="deleteItem(item.uid)">Supprimer</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 

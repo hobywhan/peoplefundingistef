@@ -12,6 +12,9 @@ import Loader from './components/Loader.vue'
 import VueNotifications from 'vue-notifications'
 import miniToastr from 'mini-toastr'
 // import tinymce from 'tinymce/tinymce.min'
+import globalcss from './styles/Global.vue'
+import fontscss from './assets/font/Fonts.vue'
+import Footer from './components/Footer.vue'
 
 function toast ({title, message, type, timeout, cb}) {
   return miniToastr[type](message, title, timeout, cb)
@@ -29,10 +32,6 @@ Vue.use(VueRouter)
 // Vue.use(VueTinymce)
 // Vue.use(VueHtml5Editor)
 
-// fireInit()
-//
-// var uifirebase = new firebaseui.auth.AuthUI(firebase.auth())
-
 export const LoadingState = new Vue()
 export const AuthenticatedState = new Vue()
 
@@ -49,7 +48,10 @@ export const App = new Vue({
   router,
   components: {
     'main-menu': Mainmenu,
-    'loader': Loader
+    'loader': Loader,
+    'main-footer': Footer,
+    fontscss,
+    globalcss
   },
   data(){
     return {
@@ -58,10 +60,11 @@ export const App = new Vue({
     }
   },
   template:
-  '<div class="container">' +
+  '<div class="">' +
     '<main-menu :authenticated="authenticated"></main-menu>' +
     '<loader v-show="isLoading"></loader>' +
-    '<router-view :authenticated="authenticated" :isLoading="isLoading"></router-view>' +
+    '<transition><keep-alive><router-view :authenticated="authenticated" :isLoading="isLoading"></router-view></keep-alive></transition>' +
+    '<main-footer :isLoading="isLoading"></main-footer>' +
   '</div>',
   created(){
     LoadingState.$on('toggle', (isLoading) => {

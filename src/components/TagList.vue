@@ -1,17 +1,19 @@
 <template>
-  <div class="tags">
-    <div class="tag-add">
-      <h3>{{msg}}</h3>
-      <input class="form-control" type="text" v-model="tag" placeholder="tag">
-      <button class="btn btn-default submit-btn" v-on:click="submit()">Ajouter</button>
-    </div>
-    <div class="tag-list">
-      <h3>{{msg2}}</h3>
-      <ul>
-        <li class="tag-item" v-for="item in tagList">
-          {{ item }}
-        </li>
-      </ul>
+  <div class="container bg-white">
+    <div class="tags">
+      <div class="tag-add">
+        <h3>{{msg}}</h3>
+        <input class="form-control" type="text" v-model="tag" placeholder="tag">
+        <button class="btn btn-default submit-btn" v-on:click="submit()">Ajouter</button>
+      </div>
+      <div class="tag-list">
+        <h3>{{msg2}}</h3>
+        <ul>
+          <li class="tag-item" v-for="item in tagList">
+            {{ item }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

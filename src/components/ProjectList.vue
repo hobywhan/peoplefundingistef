@@ -1,24 +1,26 @@
 
 <template>
-  <div class="project-list">
-    <div class="">
-      <h2>Tous les projets :</h2>
-      <div class="filter-projects">
-        <label>Titre : </label>
-        <input type="text" v-model="filter.title">
-        <label>Tags : </label>
-        <input type="text" v-model="filter.tags">
-        <label>Categories : </label>
-        <select v-model="filter.categories" v-if="categoryList.length > 0" multiple>
-          <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
-        </select>
+  <div class="container bg-white">
+    <div class="project-list">
+      <div class="">
+        <h2>Tous les projets :</h2>
+        <div class="filter-projects">
+          <label>Titre : </label>
+          <input type="text" v-model="filter.title">
+          <label>Tags : </label>
+          <input type="text" v-model="filter.tags">
+          <label>Categories : </label>
+          <select v-model="filter.categories" v-if="categoryList.length > 0" multiple>
+            <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
+          </select>
+        </div>
+        <ul class='project-list'>
+          <li class="project-item" v-for="item in projectList">
+            <projectli :project="item"></projectli>
+            <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
+          </li>
+        </ul>
       </div>
-      <ul class='project-list'>
-        <li class="project-item" v-for="item in projectList">
-          <projectli :project="item"></projectli>
-          <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
