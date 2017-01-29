@@ -1,9 +1,9 @@
 
 <template>
   <div class="container bg-white">
-    <div class="enter-project">
+    <div class="enter-project" v-if="authenticated">
         <form>
-          <h2>Ajouter un projet:</h2>
+          <h2 class="title">Ajouter un projet:</h2>
           <label>Titre : </label>
           <input class="form-control" type="text" v-model="project.title" placeholder="Titre du projet">
 
@@ -29,6 +29,11 @@
           <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
       </form>
     </div>
+    <div v-else>
+      <h3>Vous devez être connecté pour pouvoir proposer un projet</h3>
+      <p>Sur ce site vous pouvez proposer tout projet qui vous tiennent à coeur et que vous voulez réaliser, mais par manque de moyen cela était impossible, jusqu'à aujourd'hui !</p>
+      <router-link to="/login">Se connecter</router-link>
+    </div>
   </div>
 </template>
 
@@ -40,6 +45,7 @@ import tinymceeditor from './TinymceEditor.vue'
 import VueNotifications from 'vue-notifications'
 
 export default Vue.extend({
+  props: ['authenticated'],
   data () {
     return {
       canSubmit: false,

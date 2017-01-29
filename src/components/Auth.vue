@@ -1,9 +1,11 @@
 
 <template>
-  <div class="auth-wrapper">
-  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
-    <h4>Inscrivez/Connectez-vous pour partager et gérer vos projets</h4>
-    <div id="firebaseui-auth-container"></div>
+  <div class="container bg-white">
+    <div class="auth-wrapper">
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
+      <h4>Inscrivez/Connectez-vous pour partager et gérer vos projets</h4>
+      <div id="firebaseui-auth-container"></div>
+    </div>
   </div>
 </template>
 

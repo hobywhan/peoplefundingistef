@@ -18,14 +18,24 @@
       </div>
       <div class="project-list">
         <h2 class="title">Les projets du moment</h2>
-        <div class="col-md-4" v-for="item in projectList">
-          <div class="project-item col-md-12">
-            <h4 class="project-title">{{ item.title }}</h4>
-            <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
-          </div>
-        </div>
+        <projectli :project="item" v-for="item in projectList"></projectli>        
       </div>
-      <div class="information bg-lightgray col-md-12">
+      <div class="information col-md-12 title">
+        <div class="col-md-4 bg-lightgray">
+          <h2>Proposez !</h2>
+          <img src="../assets/icon/1484844629_miscellaneous-392.svg" width="100"/>
+          <h4>Vos projets</h4>
+        </div>
+        <div class="col-md-4 bg-lightgray">
+          <h2>Financez !</h2>
+          <img src="../assets/icon/1484844627_finance-302.svg" width="100"/>
+          <h4>Vos réalisations</h4>
+        </div>
+        <div class="col-md-4 bg-lightgray">
+          <h2>Aidez !</h2>
+          <img src="../assets/icon/1484844967_miscellaneous-312.svg" width="100"/>
+          <h4>Les acteurs locaux</h4>
+        </div>
       </div>
     </div>
   </div>
@@ -35,9 +45,11 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
+import projectli from './OneProject.vue'
 
 export default Vue.extend({
   components: {
+    projectli
   },
   props: ['authenticated'],
   data () {
@@ -69,7 +81,7 @@ export default Vue.extend({
 
 </script>
 
-<style scoped>
+<style>
 .research {
   height: 300px;
   position: relative;
@@ -100,6 +112,10 @@ export default Vue.extend({
   width: 50%;
   font-size: 16px;
 }
+.information {
+  margin-top: 30px;
+  text-align: center;
+}
 
 .project-list {
   list-style: none;
@@ -107,9 +123,6 @@ export default Vue.extend({
 }
 .project-list h2 {
   text-align: center;
-}
-.project-item {
-  padding: 10px;
-  border: 1px solid #999;
+  margin-bottom: 20px;
 }
 </style>

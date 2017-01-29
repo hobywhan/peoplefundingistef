@@ -38,7 +38,6 @@
           </router-link>
           <li>
             <a v-if="authenticated" class="title2" v-on:click="logout()">Déconnexion</a>
-            <a v-else class="title2" v-on:click="login()">Connexion</a>
           </li>
         </ul>
       </div>
@@ -76,8 +75,8 @@ export default Vue.extend({
       },
       {
         'title': 'Proposer',
-        'id': '/login',
-        'name': 'login',
+        'id': '/enterproject',
+        'name': 'newProject',
         'auth': true
       },
       {
@@ -91,6 +90,12 @@ export default Vue.extend({
         'id': '/myaccount',
         'name': 'account',
         'auth': false
+      },
+      {
+        'title': 'Connexion',
+        'id': '/login',
+        'name': 'login',
+        'auth': true
       }],
       cur: ' '
     }

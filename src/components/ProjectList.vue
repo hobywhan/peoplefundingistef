@@ -14,12 +14,9 @@
             <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
           </select>
         </div>
-        <ul class='project-list'>
-          <li class="project-item" v-for="item in projectList">
-            <projectli :project="item"></projectli>
-            <router-link :to="{ name: 'showProject', params: { projectId: item.uid }}">Voir plus</router-link>
-          </li>
-        </ul>
+        <div class="project-list">
+          <projectli :project="item" v-for="item in projectList"></projectli>
+        </div>
       </div>
     </div>
   </div>
@@ -134,20 +131,7 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.close-btn{
-  display: inline-block;
-  margin-left: 10px;
+.filter-projects {
+  margin-bottom: 20px;
 }
-.project-title{
-  display: inline-block;
-}
-.project-item{
-  border-bottom: 1px dotted #999;
-  padding-bottom: 10px;
-}
-.project-list{
-  list-style: none;
-  padding-left: 0;
-}
-
 </style>
