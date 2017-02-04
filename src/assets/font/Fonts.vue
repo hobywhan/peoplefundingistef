@@ -7,11 +7,11 @@
 <style>
 @font-face {
 	font-family: "DK Drop Dead Gorgeous";
-	src: url('DK Drop Dead Gorgeous.otf');
+	src: url('DK_Drop_Dead_Gorgeous.otf');
 }
 @font-face {
 	font-family: "DK Semarang";
-	src: url('DK Semarang.otf');
+	src: url('DK_Semarang.otf');
 }
 @font-face {
 	font-family: "Raspoutine Classic";

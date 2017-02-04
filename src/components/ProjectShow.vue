@@ -3,9 +3,10 @@
   <div class="container bg-white">
     <div class="project-show">
       <div class="">
-        <h2 class="project-title">{{ project.title }}</h2>
+        <h2 class="title">{{ project.title }}</h2>
+        <h3>{{ project.price }}€</h3>
+        <h3>{{ project.endDate }}</h3>
         <img :src="project.image" width="200" v-if="project.image" />
-        <p>{{project.description}}</p>
         <div v-html="project.content"></div>
       </div>
     </div>
@@ -16,6 +17,7 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
+import moment from 'moment'
 
 export default Vue.extend({
   components: {
@@ -36,6 +38,9 @@ export default Vue.extend({
       _this.project = snapshot.val()
       LoadingState.$emit('toggle', false)
     })
+    if (this.project.endDate !== undefined) {
+      this.project.endDate = moment(this.project.endDate).format('DD/MM/YYYY')
+    }
   }
 })
 
@@ -43,7 +48,4 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.project-title{
-  display: inline-block;
-}
 </style>

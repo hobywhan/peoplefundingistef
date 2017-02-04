@@ -2,31 +2,54 @@
 <template>
   <div class="container bg-white">
     <div class="enter-project" v-if="authenticated">
-        <form>
-          <h2 class="title">Ajouter un projet:</h2>
+      <form>
+        <h2 class="title">Ajouter un projet:</h2>
+
+        <div class="form-group">
           <label>Titre : </label>
           <input class="form-control" type="text" v-model="project.title" placeholder="Titre du projet">
+        </div>
 
-          <label>Description : </label>
+        <div class="form-group">
+          <label>Résumé de présentation (max 255 caractères) : </label>
           <textarea class="form-control" v-model="project.description" placeholder="Description du projet"></textarea>
+        </div>
 
-          <label>Contenu : </label>
+        <div class="form-group">
+          <label>Contenu html : </label>
           <tinymce-editor v-model="project.content"></tinymce-editor>
+        </div>
 
-          <label>Image : </label>
+        <div class="form-group">
+          <label>Image de présentation : </label>
           <input type="file" @change="loadFile" accept="image/*" />
           Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
           <span v-if="!project.image">Pas image selectionnée</span><br />
+        </div>
 
+        <div class="form-group">
           <label>Tags : </label>
-          <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparé de ';'">
+          <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparés de ';'">
+        </div>
 
-          <label>Categories : </label>
+        <div class="form-group">
+          <label>Categories : </label><br />
           <select v-model="project.categories" v-if="categoryList.length > 0" multiple>
             <option v-for="category in categoryList" v-bind:value="category">{{category.name}}</option>
           </select>
+        </div>
 
-          <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
+        <div class="form-group">
+          <label>Objectif financier (en €) : </label>
+          <input class="form-control" type="number" v-model="project.price" placeholder="10000">
+        </div>
+
+        <div class="form-group">
+          <label>Date de fin de financement (max 2 mois) : </label>
+          <datepicker v-model="project.endDate" name="endDate" language="fr" :disabled="state.disabled" format="dd/MM/yyyy"></datepicker>
+        </div>
+
+        <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
       </form>
     </div>
     <div v-else>
@@ -41,8 +64,9 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {router, LoadingState} from '../main.js'
-import tinymceeditor from './TinymceEditor.vue'
 import VueNotifications from 'vue-notifications'
+import tinymceeditor from './TinymceEditor.vue'
+import Datepicker from 'vuejs-datepicker'
 
 export default Vue.extend({
   props: ['authenticated'],
@@ -50,18 +74,21 @@ export default Vue.extend({
     return {
       canSubmit: false,
       project: {
-        title: '',
-        description: '',
-        content: '',
-        image: '',
-        tags: '',
-        categories: []
+        categories: [],
+        endDate: new Date()
       },
-      categoryList: []
+      categoryList: [],
+      state: {
+          disabled: {
+              to: new Date(), // Disable all dates up to specific date
+              from: new Date() // Disable all dates after specific date
+          }
+      }
     }
   },
   components: {
-    'tinymce-editor': tinymceeditor
+    'tinymce-editor': tinymceeditor,
+    Datepicker
   },
   methods: {
     submit() {
@@ -90,7 +117,7 @@ export default Vue.extend({
       // reader..readAsText(file) // File as raw string
     }
   },
-  created () {
+  mounted () {
     LoadingState.$emit('toggle', true)
 
     firebase.database().ref('categories').once('value', (snapshot) => {
@@ -105,7 +132,13 @@ export default Vue.extend({
       LoadingState.$emit('toggle', false)
     })
   },
-  mounted () {
+  created () {
+    let date1 = new Date()
+    date1.setMonth(date1.getMonth() + 2)
+    this.state.disabled.from = date1
+    let date2 = new Date()
+    date2.setMonth(date2.getMonth() + 1)
+    this.project.endDate = date2
   }
 })
 

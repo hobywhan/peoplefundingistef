@@ -1,29 +1,53 @@
 
 <template>
   <div class="container bg-white">
-    <div class="enter-project">
+    <div class="enter-project" v-if="authenticated">
       <form>
-        <h2>Editer un projet:</h2>
-        <label>Titre : </label> <span>{{project.title}}</span>
+        <h2 class="title">Editer un projet:</h2>
 
-        <label>Description : </label>
-        <textarea class="form-control" v-model="project.description" placeholder="Description du projet"></textarea>
+        <div class="form-group">
+          <label>Titre : </label>
+          <input class="form-control" type="text" v-model="project.title" placeholder="Titre du projet">
+        </div>
 
-        <label>Contenu : </label>
-        <tinymce-editor v-model="project.content"></tinymce-editor>
+        <div class="form-group">
+          <label>Résumé de présentation (max 255 caractères) : </label>
+          <textarea class="form-control" v-model="project.description" placeholder="Description du projet"></textarea>
+        </div>
 
-        <label>Image : </label>
-        <input type="file" @change="loadFile" accept="image/*" />
-        Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
-        <span v-if="!project.image">Pas image selectionnée</span><br />
+        <div class="form-group">
+          <label>Contenu html : </label>
+          <tinymce-editor v-model="project.content"></tinymce-editor>
+        </div>
 
-        <label>Tags : </label>
-        <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparé de ';'">
+        <div class="form-group">
+          <label>Image de présentation : </label>
+          <input type="file" @change="loadFile" accept="image/*" />
+          Image chargée (taille limitée): <img :src="project.image" width="200" v-if="project.image" />
+          <span v-if="!project.image">Pas image selectionnée</span><br />
+        </div>
 
-        <label>Categories : </label>
-        <select v-model="project.categories" v-if="categoryList.length > 0" multiple>
-          <option v-for="category in categoryList" v-bind:value="category">{{category.name}}</option>
-        </select>
+        <div class="form-group">
+          <label>Tags : </label>
+          <input class="form-control" type="text" v-model="project.tags" placeholder="Ajouter des tags, séparés de ';'">
+        </div>
+
+        <div class="form-group">
+          <label>Categories : </label><br />
+          <select v-model="project.categories" v-if="categoryList.length > 0" multiple>
+            <option v-for="category in categoryList" v-bind:value="category">{{category.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Objectif financier (en €) : </label>
+          <input class="form-control" type="number" v-model="project.price" placeholder="10000">
+        </div>
+
+        <div class="form-group">
+          <label>Date de fin de financement (max 2 mois) : </label>
+          <datepicker v-model="project.endDate" name="endDate" language="fr" :disabled="state.disabled" format="dd/MM/yyyy"></datepicker>
+        </div>
         <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
       </form>
     </div>

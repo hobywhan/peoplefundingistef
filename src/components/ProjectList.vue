@@ -3,7 +3,7 @@
   <div class="container bg-white">
     <div class="project-list">
       <div class="">
-        <h2>Tous les projets :</h2>
+        <h2 class="title">Tous les projets :</h2>
         <div class="filter-projects">
           <label>Titre : </label>
           <input type="text" v-model="filter.title">
@@ -30,6 +30,7 @@ import _ from 'underscore'
 import projectli from './OneProject.vue'
 
 export default Vue.extend({
+  props: [],
   components: {
     projectli
   },
@@ -42,13 +43,21 @@ export default Vue.extend({
         title: '',
         tags: '',
         categories: []
-      }
+      },
+      titleFilter: this.$route.params.titleFilter
     }
   },
   watch: {
     filter: {
       handler: function(val, oldVal) {
-          this.filterList(val)
+        this.filterList(val)
+      },
+      deep: true,
+      immediate: true
+    },
+    titleFilter: {
+      handler: function(val, oldVal) {
+        this.filter.title = val
       },
       deep: true,
       immediate: true
@@ -80,7 +89,7 @@ export default Vue.extend({
           childData.uid = childSnapshot.key
           var i
 
-          if (filter.title !== '') {
+          if (filter.title !== '' && filter.title !== undefined) {
               isFiltered = childData.title.includes(filter.title)
           }
 
@@ -122,7 +131,7 @@ export default Vue.extend({
       })
     }
   },
-  created: function () {
+  mounted: function () {
     this.showList()
   }
 })

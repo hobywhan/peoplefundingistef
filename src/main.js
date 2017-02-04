@@ -63,7 +63,7 @@ export const App = new Vue({
   '<div class="">' +
     '<main-menu :authenticated="authenticated"></main-menu>' +
     '<loader v-show="isLoading"></loader>' +
-    '<transition><keep-alive><router-view :authenticated="authenticated" :isLoading="isLoading"></router-view></keep-alive></transition>' +
+    '<transition><router-view :authenticated="authenticated" :isLoading="isLoading"></router-view></transition>' +
     '<main-footer :isLoading="isLoading"></main-footer>' +
   '</div>',
   created(){

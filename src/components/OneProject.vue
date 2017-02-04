@@ -1,6 +1,6 @@
 <template>
   <div class="one-project">
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-6">
       <div class="project-item col-md-12">
         <div class="row">
           <img :src="project.image" v-if="project.image" />
@@ -15,6 +15,8 @@
           <div class="categories">
             <span v-for="item in project.categories" v-if="item.name">{{item.name}}</span>
           </div>
+          <h4 v-if="project.price">{{ project.price }}€</h4>
+          <h4 v-if="project.endDate">{{ project.endDate }}</h4>
           <router-link :to="{ name: 'showProject', params: { projectId: project.uid }}">Voir plus</router-link>
           <router-link :to="{ name: 'editProject', params: { projectId: project.uid }}" v-if="isuserproject">Editer</router-link>
           <a v-on:click="deleteItem(project.uid)" v-if="isuserproject">Supprimer</a>
@@ -26,6 +28,7 @@
 
 <script>
 import Vue from 'vue/dist/vue'
+import moment from 'moment'
 
 export default Vue.extend({
   props: ['project', 'isuserproject'],
@@ -40,6 +43,9 @@ export default Vue.extend({
         filterTags[i] = filterTags[i].trim()
       }
       this.project.tags = filterTags
+    }
+    if (this.project.endDate !== undefined) {
+      this.project.endDate = moment(this.project.endDate).format('DD/MM/YYYY')
     }
   }
 })
@@ -60,6 +66,7 @@ export default Vue.extend({
 }
 .project-item {
   border: 2px solid #000;
+  margin-bottom: 15px;
 }
 .project-item .item-info {
   padding: 15px;

@@ -2,7 +2,7 @@
 <template>
   <div class="container bg-white">
     <div class="project-list">
-      <h2>Vos projets:</h2>
+      <h2 class="title">Vos projets:</h2>
       <projectli :project="item" :isuserproject="true" v-for="item in projectList"></projectli>
     </div>
   </div>
@@ -76,9 +76,6 @@ export default Vue.extend({
 .close-btn{
   display: inline-block;
   margin-left: 10px;
-}
-.project-title{
-  display: inline-block;
 }
 .project-item{
   border-bottom: 1px dotted #999;

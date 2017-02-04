@@ -3,7 +3,7 @@
   <div class="container bg-white">
     <div class="user-show">
       <div v-if="user">
-        <h2 class="user-title">{{ user.displayName }}</h2>
+        <h2 class="title">{{ user.displayName }}</h2>
         <img :src="user.avatar" width="200" v-if="user.avatar" />
         <p>{{ user.email }}</p>
         <p>{{ user.phone }}</p>
@@ -60,7 +60,4 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.user-title{
-  display: inline-block;
-}
 </style>

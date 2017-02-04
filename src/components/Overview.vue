@@ -10,15 +10,15 @@
         </div>
         <h2 class="title">Trouvez les projets qui vous intéresse !</h2>
         <div class="input">
-          <input v-model="filterTitle" type="text"/>
-          <button class="btn btn-default" v-on:click="goToList()">
+          <input v-model="titleFilter" type="text"/>
+          <button class="btn btn-default" v-on:click="goToList()" :to="{ name: 'listProject', params: { titleFilter }}">
             <img src="../assets/icon/1485652515_common-search-lookup-glyph.svg" height="20"/>
           </button>
         </div>
       </div>
       <div class="project-list">
         <h2 class="title">Les projets du moment</h2>
-        <projectli :project="item" v-for="item in projectList"></projectli>        
+        <projectli :project="item" v-for="item in projectList"></projectli>
       </div>
       <div class="information col-md-12 title">
         <div class="col-md-4 bg-lightgray">
@@ -44,7 +44,7 @@
 <script>
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
-import {LoadingState} from '../main.js'
+import {LoadingState, router} from '../main.js'
 import projectli from './OneProject.vue'
 
 export default Vue.extend({
@@ -55,6 +55,15 @@ export default Vue.extend({
   data () {
     return {
       projectList: []
+    }
+  },
+  methods: {
+    goToList() {
+      router.push(
+        {name: 'listProject',
+        params: { titleFilter: this.titleFilter },
+        force: true
+      })
     }
   },
   created: function () {
