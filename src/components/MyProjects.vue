@@ -1,8 +1,8 @@
 
 <template>
   <div class="container bg-white">
+    <h2 class="title">Vos projets:</h2>
     <div class="project-list">
-      <h2 class="title">Vos projets:</h2>
       <projectli :project="item" :isuserproject="true" v-for="item in projectList"></projectli>
     </div>
   </div>
@@ -80,10 +80,6 @@ export default Vue.extend({
 .project-item{
   border-bottom: 1px dotted #999;
   padding-bottom: 10px;
-}
-.project-list{
-  list-style: none;
-  padding-left: 0;
 }
 
 </style>

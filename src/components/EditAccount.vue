@@ -4,7 +4,7 @@
     <div class="enter-account">
       <div v-if="user">
         <form>
-          <h2>Modifiez votre compte:</h2>
+          <h2 class="title">Modifiez votre compte:</h2>
           <p>{{ user.email}}</p><br />
           <input class="form-control" type="text" v-model="account.displayName" placeholder="account.displayName"><br />
           <input class="form-control" type="text" v-model="account.phone" placeholder="account.phone"><br />
@@ -14,8 +14,8 @@
           Image chargée (taille limitée): <img :src="account.avatar" width="200" v-if="account.avatar" />
           <span v-if="!account.avatar">Pas image selectionnée<br /></span>
           <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </template>

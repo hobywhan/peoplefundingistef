@@ -3,11 +3,10 @@
   <div class="container bg-white">
     <div class="enter-project" v-if="authenticated">
       <form>
-        <h2 class="title">Editer un projet:</h2>
+        <h2 class="title">Ajouter un projet:</h2>
 
         <div class="form-group">
-          <label>Titre : </label>
-          <input class="form-control" type="text" v-model="project.title" placeholder="Titre du projet">
+          <label>Titre : {{ project.title }}</label>
         </div>
 
         <div class="form-group">
@@ -16,8 +15,9 @@
         </div>
 
         <div class="form-group">
-          <label>Contenu html : </label>
-          <tinymce-editor v-model="project.content"></tinymce-editor>
+          <label>Contenu de la page en html : </label>
+          <textarea class="form-control" v-model="project.content" placeholder="Contenu html"></textarea>
+          <!-- <tinymce-editor v-model="project.content"></tinymce-editor> -->
         </div>
 
         <div class="form-group">
@@ -40,14 +40,18 @@
         </div>
 
         <div class="form-group">
-          <label>Objectif financier (en €) : </label>
-          <input class="form-control" type="number" v-model="project.price" placeholder="10000">
+          <label>Objectif financier : {{ project.price }}€</label>
         </div>
 
         <div class="form-group">
-          <label>Date de fin de financement (max 2 mois) : </label>
-          <datepicker v-model="project.endDate" name="endDate" language="fr" :disabled="state.disabled" format="dd/MM/yyyy"></datepicker>
+          <label>Date de fin de financement : {{ project.endDate }}</label>
         </div>
+
+        <div class="form-group">
+          <label>Adresse de la société : </label>
+          <input class="form-control" type="text" v-model="project.address" placeholder="18 rue Voltaire, 31000 Toulouse">
+        </div>
+
         <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
       </form>
     </div>
@@ -62,6 +66,7 @@ import tinymceeditor from './TinymceEditor.vue'
 import VueNotifications from 'vue-notifications'
 
 export default Vue.extend({
+  props: ['authenticated'],
   data () {
     return {
       canSubmit: true,

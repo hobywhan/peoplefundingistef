@@ -1,6 +1,6 @@
 <template>
   <div class="one-project">
-    <div class="col-md-4 col-sm-6">
+    <!-- <div class="col-md-4 col-sm-6"> -->
       <div class="project-item col-md-12">
         <div class="row">
           <img :src="project.image" v-if="project.image" />
@@ -17,12 +17,13 @@
           </div>
           <h4 v-if="project.price">{{ project.price }}€</h4>
           <h4 v-if="project.endDate">{{ project.endDate }}</h4>
+          <h4 v-if="project.address">{{ project.address }}</h4>
           <router-link :to="{ name: 'showProject', params: { projectId: project.uid }}">Voir plus</router-link>
           <router-link :to="{ name: 'editProject', params: { projectId: project.uid }}" v-if="isuserproject">Editer</router-link>
           <a v-on:click="deleteItem(project.uid)" v-if="isuserproject">Supprimer</a>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 

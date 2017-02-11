@@ -1,22 +1,21 @@
 
 <template>
   <div class="container bg-white">
-    <div class="project-list">
-      <div class="">
-        <h2 class="title">Tous les projets :</h2>
-        <div class="filter-projects">
-          <label>Titre : </label>
-          <input type="text" v-model="filter.title">
-          <label>Tags : </label>
-          <input type="text" v-model="filter.tags">
-          <label>Categories : </label>
-          <select v-model="filter.categories" v-if="categoryList.length > 0" multiple>
-            <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
-          </select>
-        </div>
-        <div class="project-list">
-          <projectli :project="item" v-for="item in projectList"></projectli>
-        </div>
+    <div class="">
+      <h2 class="title">Tous les projets :</h2>
+      <div class="filter-projects">
+        <label>Titre : </label>
+        <input type="text" v-model="filter.title">
+        <label>Tags : </label>
+        <input type="text" v-model="filter.tags">
+        <label>Categories : </label>
+        <select v-model="filter.categories" v-if="categoryList.length > 0" multiple>
+          <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
+        </select>
+      </div>
+      <div class="project-list">
+        <projectli :project="item" v-for="item in projectList"></projectli>
+        <div class="clearfix visible-xs-block"></div>
       </div>
     </div>
   </div>
@@ -139,8 +138,22 @@ export default Vue.extend({
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .filter-projects {
   margin-bottom: 20px;
+}
+.project-list {
+    -moz-column-count: 3;
+    -moz-column-gap: 15px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 15px;
+    column-count: 3;
+    column-gap: 15px;
+    width: 100%;
+}
+
+.project-list .one-project {
+    display: inline-block;
+    width: 100%;
 }
 </style>

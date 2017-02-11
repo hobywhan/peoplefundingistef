@@ -8,19 +8,21 @@
           <a href="#"><img src="../assets/icon/1484844227_twitter_logo_social_media.svg" width="50"/></a>
           <a href="#"><img src="../assets/icon/1484844212_google_logo_social_media.svg" width="50"/></a>
         </div>
-        <h2 class="title">Trouvez les projets qui vous intéresse !</h2>
-        <div class="input">
+        <h2 class="title center">Trouvez les projets qui vous intéresse !</h2>
+        <div class="input center">
           <input v-model="titleFilter" type="text"/>
           <button class="btn btn-default" v-on:click="goToList()" :to="{ name: 'listProject', params: { titleFilter }}">
             <img src="../assets/icon/1485652515_common-search-lookup-glyph.svg" height="20"/>
           </button>
         </div>
       </div>
-      <div class="project-list">
-        <h2 class="title">Les projets du moment</h2>
-        <projectli :project="item" v-for="item in projectList"></projectli>
+      <div class="lastest-project">
+        <h2 class="title center">Les projets du moment</h2>
+        <div class="project-list">
+          <projectli :project="item" v-for="item in projectList"></projectli>
+        </div>
       </div>
-      <div class="information col-md-12 title">
+      <div class="information col-md-12 title center">
         <div class="col-md-4 bg-lightgray">
           <h2>Proposez !</h2>
           <img src="../assets/icon/1484844629_miscellaneous-392.svg" width="100"/>
@@ -102,14 +104,12 @@ export default Vue.extend({
   position: absolute;
   top: 40%;
   width: 100%;
-  text-align: center;
 }
 .research .input {
   position: absolute;
   bottom: 40px;
   width: 100%;
   margin: auto;
-  text-align: center;
 }
 .research .input > * {
   border-radius: 20px;
@@ -123,15 +123,5 @@ export default Vue.extend({
 }
 .information {
   margin-top: 30px;
-  text-align: center;
-}
-
-.project-list {
-  list-style: none;
-  padding-left: 0;
-}
-.project-list h2 {
-  text-align: center;
-  margin-bottom: 20px;
 }
 </style>

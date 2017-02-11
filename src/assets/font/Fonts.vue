@@ -49,4 +49,7 @@
 	font-family: "DK Semarang", Helvetica, Arial, sans-serif;
 	color: #000;
 }
+.center {
+	text-align: center;
+}
 </style>

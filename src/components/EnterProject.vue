@@ -16,8 +16,9 @@
         </div>
 
         <div class="form-group">
-          <label>Contenu html : </label>
-          <tinymce-editor v-model="project.content"></tinymce-editor>
+          <label>Contenu de la page en html : </label>
+          <textarea class="form-control" v-model="project.content" placeholder="Contenu html"></textarea>
+          <!-- <tinymce-editor v-model="project.content"></tinymce-editor> -->
         </div>
 
         <div class="form-group">
@@ -49,6 +50,11 @@
           <datepicker v-model="project.endDate" name="endDate" language="fr" :disabled="state.disabled" format="dd/MM/yyyy"></datepicker>
         </div>
 
+        <div class="form-group">
+          <label>Adresse de la société : </label>
+          <input class="form-control" type="text" v-model="project.address" placeholder="18 rue Voltaire, 31000 Toulouse">
+        </div>
+
         <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Ajouter</button>
       </form>
     </div>
@@ -65,7 +71,7 @@ import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {router, LoadingState} from '../main.js'
 import VueNotifications from 'vue-notifications'
-import tinymceeditor from './TinymceEditor.vue'
+// import tinymceeditor from './TinymceEditor.vue' // does not work
 import Datepicker from 'vuejs-datepicker'
 
 export default Vue.extend({
@@ -87,7 +93,7 @@ export default Vue.extend({
     }
   },
   components: {
-    'tinymce-editor': tinymceeditor,
+    // 'tinymce-editor': tinymceeditor,
     Datepicker
   },
   methods: {
