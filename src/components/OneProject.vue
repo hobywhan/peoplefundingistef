@@ -29,7 +29,6 @@
 
 <script>
 import Vue from 'vue/dist/vue'
-import moment from 'moment'
 
 export default Vue.extend({
   props: ['project', 'isuserproject'],
@@ -44,9 +43,6 @@ export default Vue.extend({
         filterTags[i] = filterTags[i].trim()
       }
       this.project.tags = filterTags
-    }
-    if (this.project.endDate !== undefined) {
-      this.project.endDate = moment(this.project.endDate).format('DD/MM/YYYY')
     }
   }
 })

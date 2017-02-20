@@ -48,6 +48,7 @@
         <div class="form-group">
           <label>Date de fin de financement (max 2 mois) : </label>
           <datepicker v-model="project.endDate" name="endDate" language="fr" :disabled="state.disabled" format="dd/MM/yyyy"></datepicker>
+          {{project.endDate}}
         </div>
 
         <div class="form-group">
@@ -73,6 +74,7 @@ import {router, LoadingState} from '../main.js'
 import VueNotifications from 'vue-notifications'
 // import tinymceeditor from './TinymceEditor.vue' // does not work
 import Datepicker from 'vuejs-datepicker'
+import moment from 'moment'
 
 export default Vue.extend({
   props: ['authenticated'],
@@ -101,6 +103,8 @@ export default Vue.extend({
       var user = firebase.auth().currentUser
       this.project.creator = user.uid
       this.project.time = Date.now()
+      this.project.endDate = moment(this.project.endDate).format('DD/MM/YYYY')
+      console.log(this.project)
       firebase.database().ref('projects').push(this.project)
       VueNotifications.success({message: 'Projet ajouté'})
       router.push({path: '/projectlist'})

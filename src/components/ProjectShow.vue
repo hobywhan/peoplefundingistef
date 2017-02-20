@@ -41,7 +41,7 @@
 import Vue from 'vue/dist/vue'
 import firebase from 'firebase'
 import {LoadingState} from '../main.js'
-import moment from 'moment'
+// import moment from 'moment'
 
 export default Vue.extend({
   components: {
@@ -62,9 +62,9 @@ export default Vue.extend({
       _this.project = snapshot.val()
       LoadingState.$emit('toggle', false)
     })
-    if (this.project.endDate !== undefined) {
-      this.project.endDate = moment(this.project.endDate).format('DD/MM/YYYY')
-    }
+    // if (this.project.endDate !== undefined) {
+    //   this.project.endDate = moment(this.project.endDate).format('DD/MM/YYYY')
+    // }
   }
 })
 
