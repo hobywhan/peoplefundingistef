@@ -5,14 +5,24 @@
       <div v-if="user">
         <form>
           <h2 class="title">Modifiez votre compte:</h2>
-          <p>{{ user.email}}</p><br />
-          <input class="form-control" type="text" v-model="account.displayName" placeholder="account.displayName"><br />
-          <input class="form-control" type="text" v-model="account.phone" placeholder="account.phone"><br />
-          <textarea v-model="account.address" placeholder="account.address"></textarea><br />
+          <div class="form-group">
+            <p>{{ user.email}}</p>
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" v-model="account.displayName" placeholder="Votre nom d'utilisateur">
+          </div>
+          <div class="form-group">
+            <input class="form-control" type="text" v-model="account.phone" placeholder="Votre numéro de téléphone">
+          </div>
+          <div class="form-group">
+            <textarea v-model="account.address" placeholder="Votre adresse postale"></textarea>
+          </div>
 
-          <input type="file" @change="loadFile" /><br />
-          Image chargée (taille limitée): <img :src="account.avatar" width="200" v-if="account.avatar" />
-          <span v-if="!account.avatar">Pas image selectionnée<br /></span>
+          <div class="form-group">
+            <input type="file" @change="loadFile" /><br />
+            Image chargée (taille limitée): <img :src="account.avatar" width="200" v-if="account.avatar" />
+            <span v-if="!account.avatar">Pas image selectionnée<br /></span>
+          </div>
           <button class="btn btn-default submit-btn" :disabled="!canSubmit" @click.prevent="submit">Editer</button>
         </form>
       </div>

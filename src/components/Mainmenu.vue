@@ -2,43 +2,17 @@
 <template>
   <div class="main-menu bg-white">
     <div class="container">
-      <div class="right-menu">
-
-        <!-- <nav class="navbar navbar-default">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/"><img src="../assets/logo.png" width="250"/></a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right">
-                <router-link role="presentation" tag="li" v-for="item in arrNav" v-if="item.auth != authenticated" :to="{ name: item.name }" exact>
-                  <a class="title2">{{ item.title }}</a>
-                </router-link>
-                <li>
-                  <a v-if="authenticated" class="title2" v-on:click="logout()">Déconnexion</a>
-                  <a v-else class="title2" v-on:click="login()">Connexion</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav> -->
-
+      <div class="right-menu-head row">
         <router-link class="logo" to="/">
           <img src="../assets/logo.png" width="250"/>
         </router-link>
-        <ul class="nav nav-pills row">
-          <router-link role="presentation" tag="li" v-for="item in arrNav" v-if="item.auth != authenticated" :to="{ name: item.name }" exact>
-            <a class="title2">{{ item.title }}</a>
-          </router-link>
-          <li>
+        <ul class="nav nav-pills right-menu">
+          <li class="col-md-2 col-sm-6 col-xs-12">
             <a v-if="authenticated" class="title2" v-on:click="logout()">Déconnexion</a>
           </li>
+          <router-link role="presentation" tag="li" class="col-md-2 col-sm-6 col-xs-12" v-for="item in arrNav" v-if="item.auth != authenticated" :to="{ name: item.name }" exact>
+            <a class="title2">{{ item.title }}</a>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -56,34 +30,10 @@ export default Vue.extend({
     return {
       arrNav: [
       {
-        'title': 'Explorer',
-        'id': '/projectlist',
-        'name': 'listProject',
+        'title': 'Connexion',
+        'id': '/login',
+        'name': 'login',
         'auth': true
-      },
-      {
-        'title': 'Explorer',
-        'id': '/projectlist',
-        'name': 'listProject',
-        'auth': false
-      },
-      {
-        'title': 'Mes projets',
-        'id': '/myprojects',
-        'name': 'userProject',
-        'auth': false
-      },
-      {
-        'title': 'Proposer',
-        'id': '/enterproject',
-        'name': 'newProject',
-        'auth': true
-      },
-      {
-        'title': 'Proposer',
-        'id': '/enterproject',
-        'name': 'newProject',
-        'auth': false
       },
       {
         'title': 'Mon compte',
@@ -92,9 +42,27 @@ export default Vue.extend({
         'auth': false
       },
       {
-        'title': 'Connexion',
-        'id': '/login',
-        'name': 'login',
+        'title': 'Proposer',
+        'id': '/enterproject',
+        'name': 'newProject',
+        'auth': true
+      },
+      {
+        'title': 'Proposer',
+        'id': '/enterproject',
+        'name': 'newProject',
+        'auth': false
+      },
+      {
+        'title': 'Explorer',
+        'id': '/projectlist',
+        'name': 'listProject',
+        'auth': false
+      },
+      {
+        'title': 'Explorer',
+        'id': '/projectlist',
+        'name': 'listProject',
         'auth': true
       }],
       cur: ' '
@@ -122,12 +90,15 @@ export default Vue.extend({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .main-menu {
-    height: 200px;
+    /*height: 200px;*/
   }
   li .title2 {
     font-size: 18px;
   }
-  .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+  .right-menu > li {
+    float: right;
+  }
+  .right-menu > li.active > a, .right-menu > li.active > a:focus, .right-menu > li.active > a:hover {
     color: #000;
     background-color: transparent;
     border-bottom: 5px solid #FDB719;
@@ -135,18 +106,37 @@ export default Vue.extend({
   .nav-pills > li > a {
     border-radius: 0px;
   }
-  .right-menu {
+  .right-menu-head {
     position: relative;
     min-height: 200px;
   }
-  .nav.nav-pills {
+  .right-menu {
     position: absolute;
     bottom: 0px;
     right: 0px;
+    width: 100%;
+    text-align: center;
   }
   .logo {
     position: absolute;
     bottom: 40px;
     left: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .right-menu {
+      position: relative;
+      width: 100%;
+      text-align: center;
+    }
+    .logo {
+      position: relative;
+      text-align: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      bottom: 0px;
+      left: 0px;
+    }
   }
 </style>

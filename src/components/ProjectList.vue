@@ -3,15 +3,26 @@
   <div class="container bg-white">
     <div class="">
       <h2 class="title">Tous les projets :</h2>
-      <div class="filter-projects">
-        <label>Titre : </label>
-        <input type="text" v-model="filter.title">
-        <label>Tags : </label>
-        <input type="text" v-model="filter.tags">
-        <label>Categories : </label>
-        <select v-model="filter.categories" v-if="categoryList.length > 0" multiple>
-          <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
-        </select>
+      <div class="filter-projects bg-lightgray clearfix">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+          <label>Titre : </label>
+          <input class="form-control" type="text" v-model="filter.title">
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+          <label>Tags : </label>
+          <input class="form-control" type="text" v-model="filter.tags">
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+          <label>Categories : </label>
+          <select class="form-control" v-model="filter.categories" v-if="categoryList.length > 0" multiple>
+            <option v-for="category in categoryList" v-bind:value="category.key">{{category.name}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+          <h4 class="" v-if="authenticated">
+            <router-link to="/myprojects">Voir vos projets </router-link>
+          </h4>
+        </div>
       </div>
       <div class="project-list">
         <projectli :project="item" v-for="item in projectList"></projectli>
@@ -29,7 +40,7 @@ import _ from 'underscore'
 import projectli from './OneProject.vue'
 
 export default Vue.extend({
-  props: [],
+  props: ['authenticated'],
   components: {
     projectli
   },
@@ -43,7 +54,8 @@ export default Vue.extend({
         tags: '',
         categories: []
       },
-      titleFilter: this.$route.params.titleFilter
+      titleFilter: this.$route.params.titleFilter,
+      categoryFilter: this.$route.params.categoryFilter
     }
   },
   watch: {
@@ -56,7 +68,18 @@ export default Vue.extend({
     },
     titleFilter: {
       handler: function(val, oldVal) {
-        this.filter.title = val
+        if (val !== undefined) {
+          this.filter.title = val
+        }
+      },
+      deep: true,
+      immediate: true
+    },
+    categoryFilter: {
+      handler: function(val, oldVal) {
+        if (val !== undefined) {
+          this.filter.categories = [val]
+        }
       },
       deep: true,
       immediate: true
@@ -92,7 +115,7 @@ export default Vue.extend({
               isFiltered = childData.title.includes(filter.title)
           }
 
-          if (filter.tags !== '' && isFiltered) {
+          if (filter.tags !== '' && filter.tags !== undefined && isFiltered) {
             if (childData.tags === undefined || childData.tags === '') {
               isFiltered = false
             } else {
@@ -112,6 +135,9 @@ export default Vue.extend({
               isFiltered = false
             } else {
               for (i = 0; i < filter.categories.length; i++) {
+                if (filter.categories[i] === undefined) {
+                  continue
+                }
                 if (!_.contains(_.map(childData.categories, cat => cat.key), filter.categories[i])) {
                   isFiltered = false
                   break
@@ -141,6 +167,7 @@ export default Vue.extend({
 <style>
 .filter-projects {
   margin-bottom: 20px;
+  padding: 15px;
 }
 .project-list {
     -moz-column-count: 3;
@@ -151,7 +178,28 @@ export default Vue.extend({
     column-gap: 15px;
     width: 100%;
 }
-
+@media (max-width: 992px) {
+  .project-list {
+      -moz-column-count: 2;
+      -moz-column-gap: 15px;
+      -webkit-column-count: 2;
+      -webkit-column-gap: 15px;
+      column-count: 2;
+      column-gap: 15px;
+      width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .project-list {
+      -moz-column-count: 1;
+      -moz-column-gap: 15px;
+      -webkit-column-count: 1;
+      -webkit-column-gap: 15px;
+      column-count: 1;
+      column-gap: 15px;
+      width: 100%;
+  }
+}
 .project-list .one-project {
     display: inline-block;
     width: 100%;

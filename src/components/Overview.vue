@@ -1,4 +1,3 @@
-
 <template>
   <div class="container bg-white">
     <div class="overview">
@@ -11,7 +10,7 @@
         <h2 class="title center">Trouvez les projets qui vous intéresse !</h2>
         <div class="input center">
           <input v-model="titleFilter" type="text"/>
-          <button class="btn btn-default" v-on:click="goToList()" :to="{ name: 'listProject', params: { titleFilter }}">
+          <button class="btn btn-default" v-on:click="goToList()">
             <img src="../assets/icon/1485652515_common-search-lookup-glyph.svg" height="20"/>
           </button>
         </div>
@@ -22,18 +21,18 @@
           <projectli :project="item" v-for="item in projectList"></projectli>
         </div>
       </div>
-      <div class="information col-md-12 title center">
-        <div class="col-md-4 bg-lightgray">
+      <div class="information title center">
+        <div class="col-md-4 col-sm-6 col-xs-12 bg-lightgray">
           <h2>Proposez !</h2>
           <img src="../assets/icon/1484844629_miscellaneous-392.svg" width="100"/>
           <h4>Vos projets</h4>
         </div>
-        <div class="col-md-4 bg-lightgray">
+        <div class="col-md-4 col-sm-6 col-xs-12 bg-lightgray">
           <h2>Financez !</h2>
           <img src="../assets/icon/1484844627_finance-302.svg" width="100"/>
           <h4>Vos réalisations</h4>
         </div>
-        <div class="col-md-4 bg-lightgray">
+        <div class="col-md-4 col-sm-6 col-xs-12 bg-lightgray">
           <h2>Aidez !</h2>
           <img src="../assets/icon/1484844967_miscellaneous-312.svg" width="100"/>
           <h4>Les acteurs locaux</h4>
@@ -61,8 +60,8 @@ export default Vue.extend({
   },
   methods: {
     goToList() {
-      router.push(
-        {name: 'listProject',
+      router.push({
+        name: 'listProject',
         params: { titleFilter: this.titleFilter },
         force: true
       })
